@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+- '0.11'
+- '5.0'
+- '6.0'
+after_success: bash <(curl -s https://codecov.io/bash)
+deploy:
+  - provider: npm
+    email: tituswormer@gmail.com
+    api_key:
+      secure: z6uW00tQMBbtzKKta4DNAcVZl4WYhrxxlf6xQ+YQqI5PfzxXq4f9o2JfTGnVnSMisBELTOT7cz9T/fNeSMsjm+Qt4OeVlFWQhpv02K7RB0/34qqHvEpkN396cydM2G8bRSLLJM/8FV+6gLZpPJKYvnKgrFLoOs7EavnaLG7TrnfqBiWFejCJumrlKH9t85x2Ks+kPPdEcCtCS/LKCaWC+c4rByJxi6Yb548vhxMLiSnEJ3XAH9DiWVubBJllStsq6T2Nal3W/4nvd31PHwN9oU8bmMh4J8rMrdwdGVsgp+NBYVCHdDkgQWo4zsZXMjlu3FsmOJehCTNQIbb/9oCRUoHgmthYSC6X8UPXH9aSHxDY1iV/Ng+LUK4YkW0wBbtk7g55DH2HLCYZMyNPA5ony2UHtmez0Hh6oVZB1Z3rjY6XAJlFtx4rifOeUkzqvY7y3Xjv6/Hpd6Kiq+776vuirbf+7hmQzxAmGLuMJSvG6hHxIJHuBNdcWa/08Jp/BgaP/JC/Uy7UecZau2XnrYzxnJSjTPlZXzJDUvAWd3VWSMl49GSzJv9CTXV3om48PIw5gXSrZbTTrVeXnf7aBvCK+qhyNXBXtxf6vBRyKTMvLOEYCOG5n69a0vHaX99X9Y8W7ujmZ9NWoSt2kvf1tWyFk/lpXsisPf9xDSner22vvhA=
+    on:
+      tags: true
+      node: '5.0'
+  - provider: releases
+    api_key:
+      secure: a9HvCs98hyB/ZR5s/Tc4X89qE7x/Q8Tn++iy6urhpax+4f9JnGsKsSE+RItEi38TcBOUlxJlAnic+P3kEXmhs7eqbmXEq5g7YTk/ls2xVkFhRrUUaGn0uf3SJP24pRbTNHsxmaRHW0YBMf1Fz1CfqCwuzU6ucm60KH33t+JRUIV/SOwxNuO+rj0aG3Ys01wuJjsmhMq2mTq2ssgTI5rmci2wkK37dDlNJf21pMhIFDPVANpdk0zU7DsgKSCW7rSmIpbs3Iehehy/T29RL+urQOdTpnVt2CVGKfAi00hxE9X6lG2z9RcGnR6XVY67GsTbu7Vuda0JdBFg79MN49KPtnPHjYK5gE7uInjS+cEnx4nLDFIqm9VNUpkKpFrGkyodUVqeg2REZFpu8WCHhBN11l4JHdxO6xfXS8Fjm8cnclEMpXS2+oEXoLggatV46b4wcXzMQuOV715OA+ETQr1YksjhvqMraTd5YszEzFHPsyFv61h5FRbqudBX1rvjYiVirvUL50TPT77LQEE7dtNTTR7HpPOcJQ2AzypUJHEk1XIFE4ESjCIvaajxNCEgaeox5BfuwBYILeXY0gRfN8JRMuyaMRQzkSykr+OyrNBUseYzvkj3SLWE7VgjPPVyF00Z4HCUbW1SoEXOuqErYXXAmQ1FQH0w7jq/VOWLTacYdCo=
+    file:
+      - "retext-quotes.js"
+      - "retext-quotes.min.js"
+    on:
+      tags: true
+      node: '6.0'
