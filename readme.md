@@ -1,8 +1,8 @@
 # retext-quotes [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
 
-Check quotes and apostrophes, and warn if their style (“straight”, as
-in `"` and `'`, or “smart”, as in `“”` and and '‘’') or level of
-nesting is not the preferred style.  All with [**retext**][retext].
+Check quotes and apostrophes, and warn if their style ("straight" or
+“smart”) or level of nesting is not the preferred style.  All with
+[**retext**][retext].
 
 ## Installation
 
