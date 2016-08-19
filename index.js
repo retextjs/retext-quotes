@@ -34,11 +34,11 @@ function quotes(processor, options) {
 
   function transformer(tree, file) {
     /* Walk paragraphs first, that way if the stack isn’t closed
-     * properly we can start fresh each sentence. */
-    visit(tree, 'ParagraphNode', function (sentence) {
+     * properly we can start fresh each paragraph. */
+    visit(tree, 'ParagraphNode', function (paragraph) {
       var stack = [];
 
-      visit(sentence, 'PunctuationNode', function (node, index, parent) {
+      visit(paragraph, 'PunctuationNode', function (node, index, parent) {
         var value = toString(node);
         var style = check(value, straight, smart);
         var replacement;
