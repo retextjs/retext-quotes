@@ -1,19 +1,9 @@
-/**
- * @author Titus Wormer
- * @copyright 2016 Titus Wormer
- * @license MIT
- * @module retext-quotes
- * @fileoverview Test suite for `retext-quotes`.
- */
-
 'use strict';
 
-/* Dependencies. */
 var test = require('tape');
 var retext = require('retext');
 var quotes = require('./');
 
-/* Fixtures. */
 var mixed = [
   '“One ‘sentence’. Two sentences.”',
   '"One \'sentence\'. Two sentences."'
@@ -35,7 +25,6 @@ var nesting = [
 
 var moreApostrophes = 'Isn’t it funny? It was acceptable in the ’80s';
 
-/* Tests. */
 test('quotes(value)', function (t) {
   t.deepEqual(
     retext().use(quotes).process(mixed).messages.map(String),

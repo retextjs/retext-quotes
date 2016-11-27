@@ -1,29 +1,14 @@
-/**
- * @author Titus Wormer
- * @copyright 2016 Titus Wormer
- * @license MIT
- * @module retext-quotes
- * @fileoverview Check quotes and apostrophes, and warn if
- *   their style (straight or smart) or level of nesting is not
- *   the preferred style.
- */
-
 'use strict';
 
-/* Dependencies. */
 var toString = require('nlcst-to-string');
 var visit = require('unist-util-visit');
 var is = require('unist-util-is');
 
-/* Regex to match a elided decade. */
 var DECADE = /^\d\ds$/;
 
-/* Expose. */
 module.exports = quotes;
 
-/**
- * Check quote use.
- */
+/* Check quote use. */
 function quotes(processor, options) {
   var settings = options || {};
   var preferred = settings.preferred || 'smart';
@@ -111,26 +96,12 @@ function quotes(processor, options) {
   }
 }
 
-/**
- * Check whether `straight` or `smart` contains `value`.
- *
- * @param {string} value - Marker.
- * @param {Array.<string>} straight - List of straight markers.
- * @param {Array.<string>} smart - List of smart markers.
- * @return {Object} style - Style describing `value`.
- */
+/* Check whether `straight` or `smart` contains `value`. */
 function check(value, straight, smart) {
   return contains(value, straight, 'straight') || contains(value, smart, 'smart');
 }
 
-/**
- * Check if the marker is in `markers`.
- *
- * @param {string} value - Marker.
- * @param {Array.<string>} markers - List of markers.
- * @param {string} index - `smart` or `straight`.
- * @return {Object} style - Style describing `value`.
- */
+/* Check if the marker is in `markers`. */
 function contains(value, markers, label) {
   var length = markers.length;
   var index = -1;
@@ -161,15 +132,7 @@ function contains(value, markers, label) {
 
 /* eslint-disable max-params */
 
-/**
- * Infere the `style` of a quote.
- *
- * @param {Object} style
- * @param {Array.<Object>} stack - Stack of open quotes.
- * @param {PunctuationNode} node - Mark.
- * @param {number} index - Position of `node` in `parent`.
- * @param {Node} parent - Parent of `node`.
- */
+/* Infere the `style` of a quote. */
 function inferStyle(style, stack, node, index, parent) {
   var siblings = parent.children;
   var prev;
