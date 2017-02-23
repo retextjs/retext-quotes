@@ -9,7 +9,7 @@ var DECADE = /^\d\ds$/;
 module.exports = quotes;
 
 /* Check quote use. */
-function quotes(processor, options) {
+function quotes(options) {
   var settings = options || {};
   var preferred = settings.preferred || 'smart';
   var smart = settings.smart || ['“”', '‘’'];

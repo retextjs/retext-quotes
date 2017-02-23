@@ -27,7 +27,7 @@ var moreApostrophes = 'Isn’t it funny? It was acceptable in the ’80s';
 
 test('quotes(value)', function (t) {
   t.deepEqual(
-    retext().use(quotes).process(mixed).messages.map(String),
+    retext().use(quotes).processSync(mixed).messages.map(String),
     [
       '3:1-3:2: Expected a smart quote: `“`, not `"`',
       '3:6-3:7: Expected a smart quote: `‘`, not `\'`',
@@ -38,7 +38,7 @@ test('quotes(value)', function (t) {
   );
 
   t.deepEqual(
-    retext().use(quotes, {preferred: 'straight'}).process(mixed).messages.map(String),
+    retext().use(quotes, {preferred: 'straight'}).processSync(mixed).messages.map(String),
     [
       '1:1-1:2: Expected a straight quote: `"`, not `“`',
       '1:6-1:7: Expected a straight quote: `\'`, not `‘`',
@@ -48,13 +48,13 @@ test('quotes(value)', function (t) {
     'should catch smart quotes when preferring straight'
   );
   t.deepEqual(
-    retext().use(quotes).process(moreApostrophes).messages,
+    retext().use(quotes).processSync(moreApostrophes).messages,
     [],
     'should detect common hard cases of apostrophes (when smart)'
   );
 
   t.deepEqual(
-    retext().use(quotes, {preferred: 'straight'}).process(moreApostrophes).messages.map(String),
+    retext().use(quotes, {preferred: 'straight'}).processSync(moreApostrophes).messages.map(String),
     [
       '1:4-1:5: Expected a straight apostrophe: `\'`, not `’`',
       '1:42-1:43: Expected a straight apostrophe: `\'`, not `’`'
@@ -63,7 +63,7 @@ test('quotes(value)', function (t) {
   );
 
   t.deepEqual(
-    retext().use(quotes, {preferred: 'smart'}).process(apostrophes).messages.map(String),
+    retext().use(quotes, {preferred: 'smart'}).processSync(apostrophes).messages.map(String),
     [
       '1:10-1:11: Expected a smart apostrophe: `’`, not `\'`',
       '3:1-3:2: Expected a smart quote: `“`, not `\'`',
@@ -75,7 +75,7 @@ test('quotes(value)', function (t) {
   );
 
   t.deepEqual(
-    retext().use(quotes, {preferred: 'straight'}).process(apostrophes).messages.map(String),
+    retext().use(quotes, {preferred: 'straight'}).processSync(apostrophes).messages.map(String),
     [
       '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
       '3:11-3:12: Expected `"` to be used at this level of nesting, not `\'`',
@@ -87,7 +87,7 @@ test('quotes(value)', function (t) {
   );
 
   t.deepEqual(
-    retext().use(quotes).process(nesting).messages.map(String),
+    retext().use(quotes).processSync(nesting).messages.map(String),
     [
       '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
       '3:6-3:7: Expected `‘` to be used at this level of nesting, not `“`',
@@ -106,7 +106,7 @@ test('quotes(value)', function (t) {
   );
 
   t.deepEqual(
-    retext().use(quotes, {preferred: 'straight'}).process(nesting).messages.map(String),
+    retext().use(quotes, {preferred: 'straight'}).processSync(nesting).messages.map(String),
     [
       '1:1-1:2: Expected a straight quote: `"`, not `“`',
       '1:6-1:7: Expected a straight quote: `\'`, not `‘`',
@@ -125,7 +125,7 @@ test('quotes(value)', function (t) {
   );
 
   t.deepEqual(
-    retext().use(quotes).process('“Open this, ‘Open that, “open here, ‘open there').messages,
+    retext().use(quotes).processSync('“Open this, ‘Open that, “open here, ‘open there').messages,
     [],
     'should deal with funky nesting'
   );
@@ -134,7 +134,7 @@ test('quotes(value)', function (t) {
     retext().use(quotes, {
       preferred: 'straight',
       straight: ['\'', '"']
-    }).process('"this and \'that\'"').messages.map(String),
+    }).processSync('"this and \'that\'"').messages.map(String),
     [
       '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
       '1:11-1:12: Expected `"` to be used at this level of nesting, not `\'`',
@@ -147,7 +147,7 @@ test('quotes(value)', function (t) {
   t.deepEqual(
     retext().use(quotes, {
       smart: ['«»', '‹›']
-    }).process('"this and \'that\'"').messages.map(String),
+    }).processSync('"this and \'that\'"').messages.map(String),
     [
       '1:1-1:2: Expected a smart quote: `«`, not `"`',
       '1:11-1:12: Expected a smart quote: `‹`, not `\'`',
