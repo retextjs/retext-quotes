@@ -63,7 +63,7 @@ function quotes(options) {
         /* Close stack.
          * There could be a case here where opening and closing
          * are mismatched, like `“‘this”’`.  I think we’ve got
-         * the highest change of removing them one at a time,
+         * the highest chance of removing them one at a time,
          * but haven’t really checked it.  We’ll see whether the
          * simple solution holds. */
         if (style.type === 'close') {
