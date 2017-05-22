@@ -100,11 +100,11 @@ should have double guillemets, a fourth single, a fifth double again, etc.
 ###### `options`
 
 *   `preferred` (`'smart'` or `'straight'`, default: `'smart'`)
-    — Style of quotes to prefer;
+    — Style of quotes to prefer
 *   `straight` (`Array.<string>`, default: `['"', '\'']`)
-    — List of quotes to see as “straight”;
+    — List of quotes to see as “straight”
 *   `smart` (`Array.<string>`, default: `['“”', '‘’']`)
-    — List of quotes to see as “smart”.
+    — List of quotes to see as “smart”
 
 ## Related
 
