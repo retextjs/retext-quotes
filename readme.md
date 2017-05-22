@@ -106,6 +106,15 @@ should have double guillemets, a fourth single, a fifth double again, etc.
 *   `smart` (`Array.<string>`, default: `['“”', '‘’']`)
     — List of quotes to see as “smart”.
 
+## Related
+
+*   [`retext-contractions`](https://github.com/wooorm/retext-contractions)
+    — Check apostrophe use in contractions
+*   [`retext-diacritics`](https://github.com/wooorm/retext-diacritics)
+    — Check for proper use of diacritics
+*   [`retext-sentence-spacing`](https://github.com/wooorm/retext-sentence-spacing)
+    — Check spacing (one or two spaces) between sentences
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
