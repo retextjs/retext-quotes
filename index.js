@@ -20,10 +20,14 @@ function quotes(options) {
   function transformer(tree, file) {
     /* Walk paragraphs first, that way if the stack isn’t closed
      * properly we can start fresh each paragraph. */
-    visit(tree, 'ParagraphNode', function (paragraph) {
+    visit(tree, 'ParagraphNode', visitor);
+
+    function visitor(paragraph) {
       var stack = [];
 
-      visit(paragraph, 'PunctuationNode', function (node, index, parent) {
+      visit(paragraph, 'PunctuationNode', each);
+
+      function each(node, index, parent) {
         var value = toString(node);
         var style = check(value, straight, smart);
         var replacement;
@@ -91,8 +95,8 @@ function quotes(options) {
 
         message.source = 'retext-quotes';
         message.ruleId = label;
-      });
-    });
+      }
+    }
   }
 }
 
