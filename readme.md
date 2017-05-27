@@ -14,28 +14,41 @@ npm install retext-quotes
 
 ## Usage
 
-```javascript
-var retext = require('retext');
-var english = require('retext-english');
-var quotes = require('retext-quotes');
-var report = require('vfile-reporter');
-
-retext().use(english).use(quotes).process([
-  'A sentence "with quotes, \'nested\' quotes,',
-  'and \'80s apostrophes."'
-].join('\n'), function (err, file) {
-  console.log(report(err || file));
-});
-```
-
-Yields:
+Say we have the following file, `example.txt`:
 
 ```text
-  1:12-1:13  warning  Expected a smart quote: `“`, not `"`       quote
-  1:26-1:27  warning  Expected a smart quote: `‘`, not `'`       quote
-  1:33-1:34  warning  Expected a smart quote: `’`, not `'`       quote
-    2:5-2:6  warning  Expected a smart apostrophe: `’`, not `'`  apostrophe
-  2:22-2:23  warning  Expected a smart quote: `”`, not `"`       quote
+A sentence "with quotes, 'nested' quotes,
+and '80s apostrophes."
+```
+
+And our script, `example.js`, looks like this:
+
+```javascript
+var vfile = require('to-vfile');
+var report = require('vfile-reporter');
+var unified = require('unified');
+var english = require('retext-english');
+var stringify = require('retext-stringify');
+var quotes = require('retext-quotes');
+
+unified()
+  .use(english)
+  .use(quotes)
+  .use(stringify)
+  .process(vfile.readSync('example.txt'), function (err, file) {
+    console.error(report(err || file));
+  });
+```
+
+Now, running `node example` yields:
+
+```text
+example.txt
+  1:12-1:13  warning  Expected a smart quote: `“`, not `"`       quote       retext-quotes
+  1:26-1:27  warning  Expected a smart quote: `‘`, not `'`       quote       retext-quotes
+  1:33-1:34  warning  Expected a smart quote: `’`, not `'`       quote       retext-quotes
+    2:5-2:6  warning  Expected a smart apostrophe: `’`, not `'`  apostrophe  retext-quotes
+  2:22-2:23  warning  Expected a smart quote: `”`, not `"`       quote       retext-quotes
 
 ⚠ 5 warnings
 ```
@@ -43,33 +56,36 @@ Yields:
 This plugin can be configured to prefer “straight” quotes instead:
 
 ```diff
--retext().use(english).use(quotes).process([
-+retext().use(english).use(quotes, {preferred: 'straight'}).process([
-   'A sentence "with quotes, \'nested\' quotes,',
+   .use(english)
+-  .use(quotes)
++  .use(quotes, {preferred: 'straight'})
+   .use(stringify)
 ```
 
-Yields:
+Now, running `node example` again would yield:
 
 ```text
 no issues found
 ```
 
-Or, pass in different markers that count as “smart”:
+You can also pass in different markers that count as “smart”:
 
 ```diff
--retext().use(english).use(quotes).process([
-+retext().use(english).use(quotes, {smart: ['«»', '‹›']}).process([
-   'A sentence "with quotes, \'nested\' quotes,',
+   .use(english)
+-  .use(quotes)
++  .use(quotes, {smart: ['«»', '‹›']})
+   .use(stringify)
 ```
 
-Yields:
+Running `node example` a final time yields:
 
 ```text
-  1:12-1:13  warning  Expected a smart quote: `«`, not `"`       quote
-  1:26-1:27  warning  Expected a smart quote: `‹`, not `'`       quote
-  1:33-1:34  warning  Expected a smart quote: `›`, not `'`       quote
-    2:5-2:6  warning  Expected a smart apostrophe: `’`, not `'`  apostrophe
-  2:22-2:23  warning  Expected a smart quote: `»`, not `"`       quote
+example.txt
+  1:12-1:13  warning  Expected a smart quote: `«`, not `"`       quote       retext-quotes
+  1:26-1:27  warning  Expected a smart quote: `‹`, not `'`       quote       retext-quotes
+  1:33-1:34  warning  Expected a smart quote: `›`, not `'`       quote       retext-quotes
+    2:5-2:6  warning  Expected a smart apostrophe: `’`, not `'`  apostrophe  retext-quotes
+  2:22-2:23  warning  Expected a smart quote: `»`, not `"`       quote       retext-quotes
 
 ⚠ 5 warnings
 ```
