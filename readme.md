@@ -113,14 +113,21 @@ If quotes are nested deeper than the given amount of quotes, the markers
 wrap around: a third level of nesting when using `smart: ['«»', '‹›']`
 should have double guillemets, a fourth single, a fifth double again, etc.
 
-###### `options`
+##### `options`
 
-*   `preferred` (`'smart'` or `'straight'`, default: `'smart'`)
-    — Style of quotes to prefer
-*   `straight` (`Array.<string>`, default: `['"', '\'']`)
-    — List of quotes to see as “straight”
-*   `smart` (`Array.<string>`, default: `['“”', '‘’']`)
-    — List of quotes to see as “smart”
+Optional configuration.
+
+###### `options.preferred`
+
+Style of quotes to prefer (`'smart'` or `'straight'`, default: `'smart'`).
+
+###### `options.straight`
+
+List of quotes to see as “straight” (`Array.<string>`, default: `['"', '\'']`).
+
+###### `options.smart`
+
+List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '‘’']`).
 
 ## Related
 
