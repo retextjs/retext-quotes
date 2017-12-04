@@ -11,8 +11,8 @@
     "straight",
     "retext"
   ],
-  "repository": "https://github.com/wooorm/retext-quotes",
-  "bugs": "https://github.com/wooorm/retext-quotes/issues",
+  "repository": "retextjs/retext-quotes",
+  "bugs": "https://github.com/retextjs/retext-quotes/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
@@ -53,6 +53,8 @@
     ]
   },
   "remarkConfig": {
-    "plugins": ["preset-wooorm"]
+    "plugins": [
+      "preset-wooorm"
+    ]
   }
 }

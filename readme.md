@@ -131,11 +131,11 @@ List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '�
 
 ## Related
 
-*   [`retext-contractions`](https://github.com/wooorm/retext-contractions)
+*   [`retext-contractions`](https://github.com/retextjs/retext-contractions)
     — Check apostrophe use in contractions
-*   [`retext-diacritics`](https://github.com/wooorm/retext-diacritics)
+*   [`retext-diacritics`](https://github.com/retextjs/retext-diacritics)
     — Check for proper use of diacritics
-*   [`retext-sentence-spacing`](https://github.com/wooorm/retext-sentence-spacing)
+*   [`retext-sentence-spacing`](https://github.com/retextjs/retext-sentence-spacing)
     — Check spacing (one or two spaces) between sentences
 
 ## License
@@ -144,13 +144,13 @@ List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '�
 
 <!-- Definitions -->
 
-[travis-badge]: https://img.shields.io/travis/wooorm/retext-quotes.svg
+[travis-badge]: https://img.shields.io/travis/retextjs/retext-quotes.svg
 
-[travis]: https://travis-ci.org/wooorm/retext-quotes
+[travis]: https://travis-ci.org/retextjs/retext-quotes
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/wooorm/retext-quotes.svg
+[codecov-badge]: https://img.shields.io/codecov/c/github/retextjs/retext-quotes.svg
 
-[codecov]: https://codecov.io/github/wooorm/retext-quotes
+[codecov]: https://codecov.io/github/retextjs/retext-quotes
 
 [npm-install]: https://docs.npmjs.com/cli/install
 
@@ -158,4 +158,4 @@ List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '�
 
 [author]: http://wooorm.com
 
-[retext]: https://github.com/wooorm/retext-quotes
+[retext]: https://github.com/retextjs/retext
