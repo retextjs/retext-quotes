@@ -138,6 +138,13 @@ List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '�
 *   [`retext-sentence-spacing`](https://github.com/retextjs/retext-sentence-spacing)
     — Check spacing (one or two spaces) between sentences
 
+## Contribute
+
+See [`contribute.md` in `retextjs/retext`][contribute] for ways to get started.
+
+This organisation has a [Code of Conduct][coc].  By interacting with this
+repository, organisation, or community you agree to abide by its terms.
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
@@ -159,3 +166,7 @@ List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '�
 [author]: http://wooorm.com
 
 [retext]: https://github.com/retextjs/retext
+
+[contribute]: https://github.com/retextjs/retext/blob/master/contributing.md
+
+[coc]: https://github.com/retextjs/retext/blob/master/code-of-conduct.md
