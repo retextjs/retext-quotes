@@ -13,9 +13,9 @@
   ],
   "repository": "retextjs/retext-quotes",
   "bugs": "https://github.com/retextjs/retext-quotes/issues",
-  "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
+  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
-    "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
   "files": [
     "index.js"
