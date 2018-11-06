@@ -24,20 +24,20 @@ and '80s apostrophes."
 And our script, `example.js`, looks like this:
 
 ```javascript
-var vfile = require('to-vfile');
-var report = require('vfile-reporter');
-var unified = require('unified');
-var english = require('retext-english');
-var stringify = require('retext-stringify');
-var quotes = require('retext-quotes');
+var vfile = require('to-vfile')
+var report = require('vfile-reporter')
+var unified = require('unified')
+var english = require('retext-english')
+var stringify = require('retext-stringify')
+var quotes = require('retext-quotes')
 
 unified()
   .use(english)
   .use(quotes)
   .use(stringify)
-  .process(vfile.readSync('example.txt'), function (err, file) {
-    console.error(report(err || file));
-  });
+  .process(vfile.readSync('example.txt'), function(err, file) {
+    console.error(report(err || file))
+  })
 ```
 
 Now, running `node example` yields:
