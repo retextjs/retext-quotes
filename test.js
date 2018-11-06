@@ -2,7 +2,7 @@
 
 var test = require('tape');
 var retext = require('retext');
-var quotes = require('./');
+var quotes = require('.');
 
 var mixed = [
   '“One ‘sentence’. Two sentences.”',
