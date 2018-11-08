@@ -1,6 +1,6 @@
 {
   "name": "retext-quotes",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Check quote and apostrophe usage",
   "license": "MIT",
   "keywords": [
@@ -13,9 +13,9 @@
   ],
   "repository": "retextjs/retext-quotes",
   "bugs": "https://github.com/retextjs/retext-quotes/issues",
-  "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
+  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
-    "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
   "files": [
     "index.js"
@@ -26,27 +26,41 @@
     "unist-util-visit": "^1.1.0"
   },
   "devDependencies": {
-    "browserify": "^14.1.0",
-    "esmangle": "^1.0.1",
-    "nyc": "^11.0.0",
-    "remark-cli": "^4.0.0",
-    "remark-preset-wooorm": "^3.0.0",
+    "browserify": "^16.0.0",
+    "nyc": "^13.0.0",
+    "prettier": "^1.14.3",
+    "remark-cli": "^6.0.0",
+    "remark-preset-wooorm": "^4.0.0",
     "retext": "^5.0.0",
     "tape": "^4.0.0",
-    "xo": "^0.18.0"
+    "tinyify": "^2.4.3",
+    "xo": "^0.23.0"
   },
   "scripts": {
-    "build-md": "remark . -qfo",
-    "build-bundle": "browserify index.js --bare -s retextQuotes > retext-quotes.js",
-    "build-mangle": "esmangle retext-quotes.js > retext-quotes.min.js",
-    "build": "npm run build-md && npm run build-bundle && npm run build-mangle",
-    "lint": "xo",
+    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
+    "build-bundle": "browserify . -s retextQuotes > retext-quotes.js",
+    "build-mangle": "browserify . -s retextQuotes -p tinyify > retext-quotes.min.js",
+    "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test.js",
-    "test": "npm run build && npm run lint && npm run test-coverage"
+    "test": "npm run format && npm run build && npm run test-coverage"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "lines": 100,
+    "functions": 100,
+    "branches": 100
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
   },
   "xo": {
-    "space": true,
+    "prettier": true,
     "esnext": false,
     "ignores": [
       "retext-quotes.js"

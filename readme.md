@@ -1,4 +1,4 @@
-# retext-quotes [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
+# retext-quotes [![Build][build-badge]][build] [![Coverage][coverage-badge]][coverage] [![Downloads][downloads-badge]][downloads] [![Chat][chat-badge]][chat]
 
 Check quotes and apostrophes, and warn if their style (`"straight"` or
 `“smart”`) or level of nesting is not the preferred style.  All with
@@ -24,20 +24,20 @@ and '80s apostrophes."
 And our script, `example.js`, looks like this:
 
 ```javascript
-var vfile = require('to-vfile');
-var report = require('vfile-reporter');
-var unified = require('unified');
-var english = require('retext-english');
-var stringify = require('retext-stringify');
-var quotes = require('retext-quotes');
+var vfile = require('to-vfile')
+var report = require('vfile-reporter')
+var unified = require('unified')
+var english = require('retext-english')
+var stringify = require('retext-stringify')
+var quotes = require('retext-quotes')
 
 unified()
   .use(english)
   .use(quotes)
   .use(stringify)
-  .process(vfile.readSync('example.txt'), function (err, file) {
-    console.error(report(err || file));
-  });
+  .process(vfile.readSync('example.txt'), function(err, file) {
+    console.error(report(err || file))
+  })
 ```
 
 Now, running `node example` yields:
@@ -140,7 +140,8 @@ List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '�
 
 ## Contribute
 
-See [`contribute.md` in `retextjs/retext`][contribute] for ways to get started.
+See [`contributing.md` in `retextjs/retext`][contributing] for ways to get
+started.
 
 This organisation has a [Code of Conduct][coc].  By interacting with this
 repository, organisation, or community you agree to abide by its terms.
@@ -151,22 +152,30 @@ repository, organisation, or community you agree to abide by its terms.
 
 <!-- Definitions -->
 
-[travis-badge]: https://img.shields.io/travis/retextjs/retext-quotes.svg
+[build-badge]: https://img.shields.io/travis/retextjs/retext-quotes.svg
 
-[travis]: https://travis-ci.org/retextjs/retext-quotes
+[build]: https://travis-ci.org/retextjs/retext-quotes
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/retextjs/retext-quotes.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/retextjs/retext-quotes.svg
 
-[codecov]: https://codecov.io/github/retextjs/retext-quotes
+[coverage]: https://codecov.io/github/retextjs/retext-quotes
+
+[downloads-badge]: https://img.shields.io/npm/dm/retext-quotes.svg
+
+[downloads]: https://www.npmjs.com/package/retext-quotes
+
+[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
+
+[chat]: https://spectrum.chat/unified/retext
 
 [npm-install]: https://docs.npmjs.com/cli/install
 
-[license]: LICENSE
+[license]: license
 
-[author]: http://wooorm.com
+[author]: https://wooorm.com
 
 [retext]: https://github.com/retextjs/retext
 
-[contribute]: https://github.com/retextjs/retext/blob/master/contributing.md
+[contributing]: https://github.com/retextjs/retext/blob/master/contributing.md
 
 [coc]: https://github.com/retextjs/retext/blob/master/code-of-conduct.md
