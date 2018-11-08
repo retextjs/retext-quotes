@@ -160,7 +160,6 @@ function inferStyle(style, stack, node, index, parent) {
     prev = siblings[index - 1];
     next = siblings[index + 1];
 
-    if (is('WordNode', prev)) {
       value = toString(prev);
 
       /* Apostrophe if the previous word ends in `s`, and
@@ -174,9 +173,6 @@ function inferStyle(style, stack, node, index, parent) {
       } else {
         style.type = 'close';
       }
-
-      return;
-    }
 
     if (is('WordNode', next)) {
       value = toString(next);
