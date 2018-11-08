@@ -177,7 +177,7 @@ function inferStyle(style, stack, node, index, parent) {
     prev = siblings[index - 1]
     next = siblings[index + 1]
 
-    if (is('WordNode', prev)) {
+    if (is(['WordNode', 'SourceNode'], prev)) {
       value = toString(prev)
 
       // Apostrophe if the previous word ends in `s`, and there’s no open single

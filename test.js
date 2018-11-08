@@ -2,6 +2,7 @@
 
 var test = require('tape')
 var retext = require('retext')
+var urls = require('retext-syntax-urls')
 var quotes = require('.')
 
 var mixed = [
@@ -186,6 +187,17 @@ test('quotes(value)', function(t) {
       '1:17-1:18: Expected a smart quote: `»`, not `"`'
     ],
     'should suggest based on the order (and markers) of given smart quotes'
+  )
+
+  // GH-7.
+  t.deepEqual(
+    retext()
+      .use(urls)
+      .use(quotes, {preferred: 'straight'})
+      .processSync("Node.js' liberal contribution policy")
+      .messages.map(String),
+    [],
+    'should integrate with `retext-syntax-urls` and check source nodes'
   )
 
   t.end()
