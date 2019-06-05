@@ -1,29 +1,37 @@
-# retext-quotes [![Build][build-badge]][build] [![Coverage][coverage-badge]][coverage] [![Downloads][downloads-badge]][downloads] [![Chat][chat-badge]][chat]
+# retext-quotes
 
-Check quotes and apostrophes, and warn if their style (`"straight"` or
-`“smart”`) or level of nesting is not the preferred style.  All with
-[**retext**][retext].
+[![Build][build-badge]][build]
+[![Coverage][coverage-badge]][coverage]
+[![Downloads][downloads-badge]][downloads]
+[![Size][size-badge]][size]
+[![Sponsors][sponsors-badge]][collective]
+[![Backers][backers-badge]][collective]
+[![Chat][chat-badge]][chat]
 
-## Installation
+[**retext**][retext] plugin to check quotes and apostrophes, and warn if their
+style (`"straight"` or `“smart”`) or level of nesting is not the preferred
+style.
 
-[npm][npm-install]:
+## Install
 
-```bash
+[npm][]:
+
+```sh
 npm install retext-quotes
 ```
 
-## Usage
+## Use
 
 Say we have the following file, `example.txt`:
 
-```text
+```txt
 A sentence "with quotes, 'nested' quotes,
 and '80s apostrophes."
 ```
 
-And our script, `example.js`, looks like this:
+…and our script, `example.js`, looks like this:
 
-```javascript
+```js
 var vfile = require('to-vfile')
 var report = require('vfile-reporter')
 var unified = require('unified')
@@ -42,7 +50,7 @@ unified()
 
 Now, running `node example` yields:
 
-```text
+```txt
 example.txt
   1:12-1:13  warning  Expected a smart quote: `“`, not `"`       quote       retext-quotes
   1:26-1:27  warning  Expected a smart quote: `‘`, not `'`       quote       retext-quotes
@@ -64,7 +72,7 @@ This plugin can be configured to prefer “straight” quotes instead:
 
 Now, running `node example` again would yield:
 
-```text
+```txt
 no issues found
 ```
 
@@ -79,7 +87,7 @@ You can also pass in different markers that count as “smart”:
 
 Running `node example` a final time yields:
 
-```text
+```txt
 example.txt
   1:12-1:13  warning  Expected a smart quote: `«`, not `"`       quote       retext-quotes
   1:26-1:27  warning  Expected a smart quote: `‹`, not `'`       quote       retext-quotes
@@ -94,28 +102,25 @@ example.txt
 
 ### `retext().use(quotes[, options])`
 
-Emit warnings when the use of quotes doesn’t match the preferred style.
+Check quotes and apostrophes.
+Emit warnings when they don’t match the preferred style.
 
-This plug-in knows about apostrophes as well and prefers `'` when
+This plugin knows about apostrophes as well and prefers `'` when
 `preferred: 'straight'`, and `’` otherwise.
 
 The values in `straight` and `smart` can be one or two characters.
-When two, the first character determines the opening quote and the
-second the closing quote at that level.  When one, both the opening
-and closing quote are that character.
+When two, the first character determines the opening quote and the second the
+closing quote at that level.
+When one, both the opening and closing quote are that character.
 
-Additionally, the order in which the preferred quotes appear in their
-respective list determines which quotes to use at which level of nesting.
-So, to prefer `‘’` at the first level of nesting, and `“”` at the second,
-pass: `smart: ['‘’', '“”']`.
+The order in which the preferred quotes appear in their respective list
+determines which quotes to use at which level of nesting.
+So, to prefer `‘’` at the first level of nesting, and `“”` at the second, pass:
+`smart: ['‘’', '“”']`.
 
-If quotes are nested deeper than the given amount of quotes, the markers
-wrap around: a third level of nesting when using `smart: ['«»', '‹›']`
-should have double guillemets, a fourth single, a fifth double again, etc.
-
-##### `options`
-
-Optional configuration.
+If quotes are nested deeper than the given amount of quotes, the markers wrap
+around: a third level of nesting when using `smart: ['«»', '‹›']` should have
+double guillemets, a fourth single, a fifth double again, etc.
 
 ###### `options.preferred`
 
@@ -140,11 +145,13 @@ List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '�
 
 ## Contribute
 
-See [`contributing.md` in `retextjs/retext`][contributing] for ways to get
-started.
+See [`contributing.md`][contributing] in [`retextjs/.github`][health] for ways
+to get started.
+See [`support.md`][support] for ways to get help.
 
-This organisation has a [Code of Conduct][coc].  By interacting with this
-repository, organisation, or community you agree to abide by its terms.
+This project has a [Code of Conduct][coc].
+By interacting with this repository, organisation, or community you agree to
+abide by its terms.
 
 ## License
 
@@ -164,18 +171,32 @@ repository, organisation, or community you agree to abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/retext-quotes
 
+[size-badge]: https://img.shields.io/bundlephobia/minzip/retext-quotes.svg
+
+[size]: https://bundlephobia.com/result?p=retext-quotes
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[collective]: https://opencollective.com/unified
+
 [chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
 
 [chat]: https://spectrum.chat/unified/retext
 
-[npm-install]: https://docs.npmjs.com/cli/install
+[npm]: https://docs.npmjs.com/cli/install
+
+[health]: https://github.com/retextjs/.github
+
+[contributing]: https://github.com/retextjs/.github/blob/master/contributing.md
+
+[support]: https://github.com/retextjs/.github/blob/master/support.md
+
+[coc]: https://github.com/retextjs/.github/blob/master/code-of-conduct.md
 
 [license]: license
 
 [author]: https://wooorm.com
 
 [retext]: https://github.com/retextjs/retext
-
-[contributing]: https://github.com/retextjs/retext/blob/master/contributing.md
-
-[coc]: https://github.com/retextjs/retext/blob/master/code-of-conduct.md
