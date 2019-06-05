@@ -10,14 +10,18 @@ var wordOrSource = convert(['WordNode', 'SourceNode'])
 
 var decadeExpression = /^\d\ds$/
 var source = 'retext-quotes'
-var quotationMark = '"'
-var apostrophe = "'"
+var doubleQuotationMark = '"'
+var singleQuotationMark = "'"
 var leftDoubleQuotationMark = '“'
 var rightDoubleQuotationMark = '”'
 var leftSingleQuotationMark = '‘'
 var rightSingleQuotationMark = '’'
 var doubleQuotationMarks = leftDoubleQuotationMark + rightDoubleQuotationMark
 var singleQuotationMarks = leftSingleQuotationMark + rightSingleQuotationMark
+var opening = 'open'
+var closing = 'close'
+var apostrophe = 'apostrophe'
+var quote = 'quote'
 
 module.exports = quotes
 
@@ -26,7 +30,7 @@ function quotes(options) {
   var settings = options || {}
   var preferred = settings.preferred || 'smart'
   var smart = settings.smart || [doubleQuotationMarks, singleQuotationMarks]
-  var straight = settings.straight || [quotationMark, apostrophe]
+  var straight = settings.straight || [doubleQuotationMark, singleQuotationMark]
 
   return transformer
 
@@ -39,6 +43,8 @@ function quotes(options) {
       var stack = []
 
       visit(paragraph, 'PunctuationNode', each)
+
+      return visit.SKIP
 
       function each(node, index, parent) {
         var value = toString(node)
@@ -53,7 +59,7 @@ function quotes(options) {
         }
 
         if (
-          value === apostrophe ||
+          value === singleQuotationMark ||
           value === rightSingleQuotationMark ||
           !style.type
         ) {
@@ -61,29 +67,32 @@ function quotes(options) {
         }
 
         // Open stack.
-        if (style.type === 'open') {
+        if (style.type === opening) {
           stack.push(style)
         }
 
         // Calculate preferred style.
-        if (style.type === 'apostrophe') {
+        if (style.type === apostrophe) {
           replacement =
-            preferred === 'smart' ? rightSingleQuotationMark : apostrophe
+            preferred === 'smart'
+              ? rightSingleQuotationMark
+              : singleQuotationMark
         } else {
           markers = preferred === 'smart' ? smart : straight
           replacement = markers[(stack.length + 1) % markers.length]
 
           if (replacement.length > 1) {
-            replacement = replacement.charAt(style.type === 'open' ? 0 : 1)
+            replacement = replacement.charAt(style.type === opening ? 0 : 1)
           }
         }
 
         // Close stack.
         // There could be a case here where opening and closing are mismatched,
-        // like `“‘this”’`.  I think we’ve got the highest chance of removing
-        // them one at a time, but haven’t really checked it.  We’ll see
-        // whether the simple solution holds.
-        if (style.type === 'close') {
+        // like `“‘this”’`.
+        // I think we’ve got the highest chance of removing them one at a time,
+        // but haven’t really checked it.
+        // We’ll see whether the simple solution holds.
+        if (style.type === closing) {
           stack.pop()
         }
 
@@ -92,15 +101,14 @@ function quotes(options) {
           return
         }
 
-        // On to warning...
-        label = style.type === 'apostrophe' ? style.type : 'quote'
+        // On to warning…
+        label = style.type === apostrophe ? style.type : quote
 
         if (preferred === style.style) {
           message = file.warn(
             'Expected `' +
               replacement +
-              '` to be used at this ' +
-              'level of nesting, not `' +
+              '` to be used at this level of nesting, not `' +
               value +
               '`',
             node
@@ -146,11 +154,11 @@ function contains(value, markers, label) {
     both = marker.length > 1
 
     if (marker.charAt(0) === value) {
-      return {style: label, type: both ? 'open' : null, marker: marker}
+      return {style: label, type: both ? opening : null, marker: marker}
     }
 
     if (both && marker.charAt(1) === value) {
-      return {style: label, type: 'close', marker: marker}
+      return {style: label, type: closing, marker: marker}
     }
   }
 }
@@ -170,10 +178,10 @@ function inferStyle(style, stack, node, index, parent) {
 
   value = toString(node)
 
-  if (value === apostrophe || value === rightSingleQuotationMark) {
+  if (value === singleQuotationMark || value === rightSingleQuotationMark) {
     // Apostrophe when in word.
     if (word(parent)) {
-      style.type = 'apostrophe'
+      style.type = apostrophe
       return
     }
 
@@ -189,9 +197,9 @@ function inferStyle(style, stack, node, index, parent) {
         value.charAt(value.length - 1).toLowerCase() === 's' &&
         open(stack, style)
       ) {
-        style.type = 'apostrophe'
+        style.type = apostrophe
       } else {
-        style.type = 'close'
+        style.type = closing
       }
 
       return
@@ -201,13 +209,13 @@ function inferStyle(style, stack, node, index, parent) {
       value = toString(next)
 
       // Apostrophe if the next word is a decade.
-      style.type = decadeExpression.test(value) ? 'apostrophe' : 'open'
+      style.type = decadeExpression.test(value) ? apostrophe : opening
 
       return
     }
   }
 
-  style.type = open(stack, style) ? 'open' : 'close'
+  style.type = open(stack, style) ? opening : closing
 }
 
 function open(stack, style) {
