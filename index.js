@@ -2,7 +2,11 @@
 
 var toString = require('nlcst-to-string')
 var visit = require('unist-util-visit')
-var is = require('unist-util-is')
+var convert = require('unist-util-is/convert')
+
+var word = convert('WordNode')
+var punctuation = convert('PunctuationNode')
+var wordOrSource = convert(['WordNode', 'SourceNode'])
 
 var decadeExpression = /^\d\ds$/
 var source = 'retext-quotes'
@@ -160,7 +164,7 @@ function inferStyle(style, stack, node, index, parent) {
   var value
 
   /* istanbul ignore if - Needed if this is ever externalised. */
-  if (!node || node.type !== 'PunctuationNode') {
+  if (!node || !punctuation(node)) {
     return
   }
 
@@ -168,7 +172,7 @@ function inferStyle(style, stack, node, index, parent) {
 
   if (value === apostrophe || value === rightSingleQuotationMark) {
     // Apostrophe when in word.
-    if (is('WordNode', parent)) {
+    if (word(parent)) {
       style.type = 'apostrophe'
       return
     }
@@ -176,7 +180,7 @@ function inferStyle(style, stack, node, index, parent) {
     prev = siblings[index - 1]
     next = siblings[index + 1]
 
-    if (is(['WordNode', 'SourceNode'], prev)) {
+    if (wordOrSource(prev)) {
       value = toString(prev)
 
       // Apostrophe if the previous word ends in `s`, and there’s no open single
@@ -193,7 +197,7 @@ function inferStyle(style, stack, node, index, parent) {
       return
     }
 
-    if (is('WordNode', next)) {
+    if (word(next)) {
       value = toString(next)
 
       // Apostrophe if the next word is a decade.
