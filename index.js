@@ -105,7 +105,7 @@ function quotes(options) {
         label = style.type === apostrophe ? style.type : quote
 
         if (preferred === style.style) {
-          message = file.warn(
+          message = file.message(
             'Expected `' +
               replacement +
               '` to be used at this level of nesting, not `' +
@@ -114,7 +114,7 @@ function quotes(options) {
             node
           )
         } else {
-          message = file.warn(
+          message = file.message(
             'Expected a ' +
               preferred +
               ' ' +
