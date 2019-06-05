@@ -1,15 +1,18 @@
 {
   "name": "retext-quotes",
   "version": "2.0.3",
-  "description": "Check quote and apostrophe usage",
+  "description": "retext plugin to check quote and apostrophe usage",
   "license": "MIT",
   "keywords": [
+    "unified",
+    "retext",
+    "plugin",
     "quote",
     "apostrophe",
     "smart",
+    "curly",
     "dumb",
-    "straight",
-    "retext"
+    "straight"
   ],
   "repository": "retextjs/retext-quotes",
   "bugs": "https://github.com/retextjs/retext-quotes/issues",
