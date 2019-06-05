@@ -151,9 +151,8 @@ function contains(value, markers, label) {
   }
 }
 
-/* eslint-disable max-params */
-
 // Infere the `style` of a quote.
+// eslint-disable-next-line max-params
 function inferStyle(style, stack, node, index, parent) {
   var siblings = parent.children
   var prev
