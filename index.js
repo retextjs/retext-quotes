@@ -47,9 +47,9 @@ function quotes(options) {
       return visit.SKIP
 
       function each(node, index, parent) {
-        var value = toString(node)
-        var style = check(value, straight, smart)
-        var replacement
+        var actual = toString(node)
+        var style = check(actual, straight, smart)
+        var expected
         var message
         var markers
         var label
@@ -59,8 +59,8 @@ function quotes(options) {
         }
 
         if (
-          value === singleQuotationMark ||
-          value === rightSingleQuotationMark ||
+          actual === singleQuotationMark ||
+          actual === rightSingleQuotationMark ||
           !style.type
         ) {
           inferStyle(style, stack, node, index, parent)
@@ -73,16 +73,16 @@ function quotes(options) {
 
         // Calculate preferred style.
         if (style.type === apostrophe) {
-          replacement =
+          expected =
             preferred === 'smart'
               ? rightSingleQuotationMark
               : singleQuotationMark
         } else {
           markers = preferred === 'smart' ? smart : straight
-          replacement = markers[(stack.length + 1) % markers.length]
+          expected = markers[(stack.length + 1) % markers.length]
 
-          if (replacement.length > 1) {
-            replacement = replacement.charAt(style.type === opening ? 0 : 1)
+          if (expected.length > 1) {
+            expected = expected.charAt(style.type === opening ? 0 : 1)
           }
         }
 
@@ -97,7 +97,7 @@ function quotes(options) {
         }
 
         // Perfect!
-        if (replacement === value) {
+        if (actual === expected) {
           return
         }
 
@@ -107,9 +107,9 @@ function quotes(options) {
         if (preferred === style.style) {
           message = file.message(
             'Expected `' +
-              replacement +
+              expected +
               '` to be used at this level of nesting, not `' +
-              value +
+              actual +
               '`',
             node
           )
@@ -120,9 +120,9 @@ function quotes(options) {
               ' ' +
               label +
               ': `' +
-              replacement +
+              expected +
               '`, not `' +
-              value +
+              actual +
               '`',
             node
           )
@@ -130,6 +130,8 @@ function quotes(options) {
 
         message.source = source
         message.ruleId = label
+        message.actual = actual
+        message.expected = [expected]
       }
     }
   }

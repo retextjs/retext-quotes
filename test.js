@@ -33,6 +33,66 @@ var thisAndThat = '"this and \'that\'"'
 test('quotes(value)', function(t) {
   retext()
     .use(quotes)
+    .process('Isn\'t it "funny"?', function(err, file) {
+      t.deepEqual(
+        [err].concat(file.messages),
+        [
+          null,
+          {
+            message: "Expected a smart apostrophe: `’`, not `'`",
+            name: '1:4-1:5',
+            reason: "Expected a smart apostrophe: `’`, not `'`",
+            line: 1,
+            column: 4,
+            location: {
+              start: {line: 1, column: 4, offset: 3},
+              end: {line: 1, column: 5, offset: 4}
+            },
+            source: 'retext-quotes',
+            ruleId: 'apostrophe',
+            fatal: false,
+            actual: "'",
+            expected: ['’']
+          },
+          {
+            message: 'Expected a smart quote: `“`, not `"`',
+            name: '1:10-1:11',
+            reason: 'Expected a smart quote: `“`, not `"`',
+            line: 1,
+            column: 10,
+            location: {
+              start: {line: 1, column: 10, offset: 9},
+              end: {line: 1, column: 11, offset: 10}
+            },
+            source: 'retext-quotes',
+            ruleId: 'quote',
+            fatal: false,
+            actual: '"',
+            expected: ['“']
+          },
+          {
+            message: 'Expected a smart quote: `”`, not `"`',
+            name: '1:16-1:17',
+            reason: 'Expected a smart quote: `”`, not `"`',
+            line: 1,
+            column: 16,
+            location: {
+              start: {line: 1, column: 16, offset: 15},
+              end: {line: 1, column: 17, offset: 16}
+            },
+            source: 'retext-quotes',
+            ruleId: 'quote',
+            fatal: false,
+            actual: '"',
+            expected: ['”']
+          }
+        ],
+        'should emit messages'
+      )
+    })
+
+  retext()
+    .use(quotes)
     .process(mixed, function(err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
