@@ -134,6 +134,27 @@ List of quotes to see as “straight” (`Array.<string>`, default: `['"', '\'']
 
 List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '‘’']`).
 
+### Messages
+
+Each message is emitted as a [`VFileMessage`][message] on `file`, with the
+following fields:
+
+###### `message.source`
+
+Name of this plugin (`'retext-quotes'`).
+
+###### `message.ruleId`
+
+Category of message (`'apostrophe'` or `'quote'`)
+
+###### `message.actual`
+
+Current not ok character (`string`).
+
+###### `message.expected`
+
+Suggested replacement character (`Array.<string>`).
+
 ## Related
 
 *   [`retext-contractions`](https://github.com/retextjs/retext-contractions)
@@ -200,3 +221,5 @@ abide by its terms.
 [author]: https://wooorm.com
 
 [retext]: https://github.com/retextjs/retext
+
+[message]: https://github.com/vfile/vfile-message
