@@ -105,8 +105,8 @@ example.txt
 Check quotes and apostrophes.
 Emit warnings when they don’t match the preferred style.
 
-This plugin knows about apostrophes as well and prefers `'` when
-`preferred: 'straight'`, and `’` otherwise.
+This plugin knows about apostrophes as well and prefers `'` when `preferred:
+'straight'`, and `’` otherwise.
 
 The values in `straight` and `smart` can be one or two characters.
 When two, the first character determines the opening quote and the second the
@@ -170,8 +170,8 @@ See [`contributing.md`][contributing] in [`retextjs/.github`][health] for ways
 to get started.
 See [`support.md`][support] for ways to get help.
 
-This project has a [Code of Conduct][coc].
-By interacting with this repository, organisation, or community you agree to
+This project has a [code of conduct][coc].
+By interacting with this repository, organization, or community you agree to
 abide by its terms.
 
 ## License
@@ -202,7 +202,7 @@ abide by its terms.
 
 [collective]: https://opencollective.com/unified
 
-[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
+[chat-badge]: https://img.shields.io/badge/chat-spectrum-7b16ff.svg
 
 [chat]: https://spectrum.chat/unified/retext
 
