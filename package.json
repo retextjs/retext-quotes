@@ -1,11 +1,12 @@
 {
   "name": "retext-quotes",
   "version": "3.0.0",
-  "description": "retext plugin to check quote and apostrophe usage",
+  "description": "retext plugin to check quotes and apostrophes",
   "license": "MIT",
   "keywords": [
     "unified",
     "retext",
+    "retext-plugin",
     "plugin",
     "quote",
     "apostrophe",
