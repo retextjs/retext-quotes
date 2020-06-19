@@ -30,12 +30,12 @@ var soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
 
 var thisAndThat = '"this and \'that\'"'
 
-test('quotes(value)', function(t) {
+test('quotes(value)', function (t) {
   retext()
     .use(quotes)
-    .process('Isn\'t it "funny"?', function(err, file) {
+    .process('Isn\'t it "funny"?', function (err, file) {
       t.deepEqual(
-        [err].concat(file.messages),
+        JSON.parse(JSON.stringify([err].concat(file.messages))),
         [
           null,
           {
@@ -93,7 +93,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes)
-    .process(mixed, function(err, file) {
+    .process(mixed, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -109,7 +109,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(mixed, function(err, file) {
+    .process(mixed, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -125,7 +125,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes)
-    .process(moreApostrophes, function(err, file) {
+    .process(moreApostrophes, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [null],
@@ -135,7 +135,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(moreApostrophes, function(err, file) {
+    .process(moreApostrophes, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -149,7 +149,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes, {preferred: 'smart'})
-    .process(apostrophes, function(err, file) {
+    .process(apostrophes, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -166,7 +166,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(apostrophes, function(err, file) {
+    .process(apostrophes, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -183,7 +183,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes)
-    .process(nesting, function(err, file) {
+    .process(nesting, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -207,7 +207,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(nesting, function(err, file) {
+    .process(nesting, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -231,7 +231,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes)
-    .process(soManyOpenings, function(err, file) {
+    .process(soManyOpenings, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [null],
@@ -241,7 +241,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes, {preferred: 'straight', straight: ["'", '"']})
-    .process(thisAndThat, function(err, file) {
+    .process(thisAndThat, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -257,7 +257,7 @@ test('quotes(value)', function(t) {
 
   retext()
     .use(quotes, {smart: ['«»', '‹›']})
-    .process(thisAndThat, function(err, file) {
+    .process(thisAndThat, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [
@@ -275,7 +275,7 @@ test('quotes(value)', function(t) {
   retext()
     .use(urls)
     .use(quotes, {preferred: 'straight'})
-    .process(thisAndThat, function(err, file) {
+    .process(thisAndThat, function (err, file) {
       t.deepEqual(
         [err].concat(file.messages.map(String)),
         [null],

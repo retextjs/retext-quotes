@@ -1,3 +1,5 @@
 coverage/
 retext-quotes.js
 retext-quotes.min.js
+*.json
+*.md

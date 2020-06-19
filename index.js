@@ -169,7 +169,7 @@ function contains(value, markers, label) {
 // eslint-disable-next-line max-params
 function inferStyle(style, stack, node, index, parent) {
   var siblings = parent.children
-  var prev
+  var previous
   var next
   var value
 
@@ -187,11 +187,11 @@ function inferStyle(style, stack, node, index, parent) {
       return
     }
 
-    prev = siblings[index - 1]
+    previous = siblings[index - 1]
     next = siblings[index + 1]
 
-    if (wordOrSource(prev)) {
-      value = toString(prev)
+    if (wordOrSource(previous)) {
+      value = toString(previous)
 
       // Apostrophe if the previous word ends in `s`, and there’s no open single
       // quote.  Example: `Mr. Jones' golf clubs` vs. `'Mr. Jones' golf clubs`.
