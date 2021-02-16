@@ -104,29 +104,24 @@ function quotes(options) {
         // On to warning…
         label = style.type === apostrophe ? style.type : quote
 
-        if (preferred === style.style) {
-          message = file.message(
-            'Expected `' +
-              expected +
-              '` to be used at this level of nesting, not `' +
-              actual +
-              '`',
-            node
-          )
-        } else {
-          message = file.message(
-            'Expected a ' +
-              preferred +
-              ' ' +
-              label +
-              ': `' +
-              expected +
-              '`, not `' +
-              actual +
-              '`',
-            node
-          )
-        }
+        message = file.message(
+          preferred === style.style
+            ? 'Expected `' +
+                expected +
+                '` to be used at this level of nesting, not `' +
+                actual +
+                '`'
+            : 'Expected a ' +
+                preferred +
+                ' ' +
+                label +
+                ': `' +
+                expected +
+                '`, not `' +
+                actual +
+                '`',
+          node
+        )
 
         message.source = source
         message.ruleId = label

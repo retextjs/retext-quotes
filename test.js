@@ -33,9 +33,9 @@ var thisAndThat = '"this and \'that\'"'
 test('quotes(value)', function (t) {
   retext()
     .use(quotes)
-    .process('Isn\'t it "funny"?', function (err, file) {
+    .process('Isn\'t it "funny"?', function (error, file) {
       t.deepEqual(
-        JSON.parse(JSON.stringify([err].concat(file.messages))),
+        JSON.parse(JSON.stringify([error].concat(file.messages))),
         [
           null,
           {
@@ -93,9 +93,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes)
-    .process(mixed, function (err, file) {
+    .process(mixed, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           '3:1-3:2: Expected a smart quote: `“`, not `"`',
@@ -109,9 +109,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(mixed, function (err, file) {
+    .process(mixed, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
@@ -125,9 +125,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes)
-    .process(moreApostrophes, function (err, file) {
+    .process(moreApostrophes, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [null],
         'should detect common hard cases of apostrophes (when smart)'
       )
@@ -135,9 +135,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(moreApostrophes, function (err, file) {
+    .process(moreApostrophes, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           "1:4-1:5: Expected a straight apostrophe: `'`, not `’`",
@@ -149,9 +149,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes, {preferred: 'smart'})
-    .process(apostrophes, function (err, file) {
+    .process(apostrophes, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           "1:10-1:11: Expected a smart apostrophe: `’`, not `'`",
@@ -166,9 +166,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(apostrophes, function (err, file) {
+    .process(apostrophes, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
@@ -183,9 +183,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes)
-    .process(nesting, function (err, file) {
+    .process(nesting, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
@@ -207,9 +207,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes, {preferred: 'straight'})
-    .process(nesting, function (err, file) {
+    .process(nesting, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
@@ -231,9 +231,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes)
-    .process(soManyOpenings, function (err, file) {
+    .process(soManyOpenings, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [null],
         'should deal with funky nesting'
       )
@@ -241,9 +241,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes, {preferred: 'straight', straight: ["'", '"']})
-    .process(thisAndThat, function (err, file) {
+    .process(thisAndThat, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
@@ -257,9 +257,9 @@ test('quotes(value)', function (t) {
 
   retext()
     .use(quotes, {smart: ['«»', '‹›']})
-    .process(thisAndThat, function (err, file) {
+    .process(thisAndThat, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [
           null,
           '1:1-1:2: Expected a smart quote: `«`, not `"`',
@@ -275,9 +275,9 @@ test('quotes(value)', function (t) {
   retext()
     .use(urls)
     .use(quotes, {preferred: 'straight'})
-    .process(thisAndThat, function (err, file) {
+    .process(thisAndThat, function (error, file) {
       t.deepEqual(
-        [err].concat(file.messages.map(String)),
+        [error].concat(file.messages.map(String)),
         [null],
         'should integrate with `retext-syntax-urls` and check source nodes'
       )
