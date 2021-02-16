@@ -180,9 +180,9 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/retextjs/retext-quotes.svg
+[build-badge]: https://github.com/retextjs/retext-quotes/workflows/main/badge.svg
 
-[build]: https://travis-ci.org/retextjs/retext-quotes
+[build]: https://github.com/retextjs/retext-quotes/actions
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/retextjs/retext-quotes.svg
 
