@@ -14,6 +14,9 @@ style.
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -32,19 +35,22 @@ and '80s apostrophes."
 …and our script, `example.js`, looks like this:
 
 ```js
-var vfile = require('to-vfile')
-var report = require('vfile-reporter')
-var unified = require('unified')
-var english = require('retext-english')
-var stringify = require('retext-stringify')
-var quotes = require('retext-quotes')
+import {readSync} from 'to-vfile'
+import {reporter} from 'vfile-reporter'
+import {unified} from 'unified'
+import retextEnglish from 'retext-english'
+import retextQuotes from 'retext-quotes'
+import retextStringify from 'retext-stringify'
+
+const file = readSync('example.txt')
 
 unified()
-  .use(english)
-  .use(quotes)
-  .use(stringify)
-  .process(vfile.readSync('example.txt'), function(err, file) {
-    console.error(report(err || file))
+  .use(retextEnglish)
+  .use(retextQuotes)
+  .use(retextStringify)
+  .process(file)
+  .then((file) => {
+    console.error(reporter(file))
   })
 ```
 
@@ -64,10 +70,10 @@ example.txt
 This plugin can be configured to prefer “straight” quotes instead:
 
 ```diff
-   .use(english)
--  .use(quotes)
-+  .use(quotes, {preferred: 'straight'})
-   .use(stringify)
+   .use(retextEnglish)
+-  .use(retextQuotes)
++  .use(retextQuotes, {preferred: 'straight'})
+   .use(retextStringify)
 ```
 
 Now, running `node example` again would yield:
@@ -79,10 +85,10 @@ no issues found
 You can also pass in different markers that count as “smart”:
 
 ```diff
-   .use(english)
--  .use(quotes)
-+  .use(quotes, {smart: ['«»', '‹›']})
-   .use(stringify)
+   .use(retextEnglish)
+-  .use(retextQuotes)
++  .use(retextQuotes, {smart: ['«»', '‹›']})
+   .use(retextStringify)
 ```
 
 Running `node example` a final time yields:
@@ -100,7 +106,10 @@ example.txt
 
 ## API
 
-### `retext().use(quotes[, options])`
+This package exports no identifiers.
+The default export is `retextQuotes`.
+
+### `unified().use(retextQuotes[, options])`
 
 Check quotes and apostrophes.
 Emit warnings when they don’t match the preferred style.
