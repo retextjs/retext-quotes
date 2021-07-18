@@ -1,6 +1,6 @@
-import toString from 'nlcst-to-string'
-import visit from 'unist-util-visit'
-import convert from 'unist-util-is/convert.js'
+import {toString} from 'nlcst-to-string'
+import {visit} from 'unist-util-visit'
+import {convert} from 'unist-util-is'
 
 var word = convert('WordNode')
 var punctuation = convert('PunctuationNode')
