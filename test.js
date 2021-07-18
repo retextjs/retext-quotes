@@ -3,35 +3,36 @@ import {retext} from 'retext'
 import retextSyntaxUrls from 'retext-syntax-urls'
 import retextQuotes from './index.js'
 
-var mixed = [
+const mixed = [
   '“One ‘sentence’. Two sentences.”',
   '"One \'sentence\'. Two sentences."'
 ].join('\n\n')
 
-var apostrophes = [
+const apostrophes = [
   "Mr. Jones' golf clubs.",
   "'Mr. Jones' golf clubs.",
   'Mr. Jones’ golf clubs.',
   '‘Mr. Jones’ golf clubs.'
 ].join('\n\n')
 
-var nesting = [
+const nesting = [
   '“One ‘sentence’. Two sentences.”',
   '‘One “sentence”. Two sentences.’',
   '"One \'sentence\'. Two sentences."',
   '\'One "sentence". Two sentences.\''
 ].join('\n\n')
 
-var moreApostrophes = 'Isn’t it funny? It was acceptable in the ’80s'
+const moreApostrophes = 'Isn’t it funny? It was acceptable in the ’80s'
 
-var soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
+const soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
 
-var thisAndThat = '"this and \'that\'"'
+const thisAndThat = '"this and \'that\'"'
 
-test('retext-quotes', function (t) {
+test('retext-quotes', (t) => {
   retext()
     .use(retextQuotes)
-    .process('Isn\'t it "funny"?', function (error, file) {
+    .process('Isn\'t it "funny"?', (error, file) => {
+      console.log(error)
       t.deepEqual(
         JSON.parse(JSON.stringify([error].concat(file.messages))),
         [
@@ -91,9 +92,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes)
-    .process(mixed, function (error, file) {
+    .process(mixed, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           '3:1-3:2: Expected a smart quote: `“`, not `"`',
@@ -107,9 +108,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(mixed, function (error, file) {
+    .process(mixed, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
@@ -123,9 +124,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes)
-    .process(moreApostrophes, function (error, file) {
+    .process(moreApostrophes, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [null],
         'should detect common hard cases of apostrophes (when smart)'
       )
@@ -133,9 +134,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(moreApostrophes, function (error, file) {
+    .process(moreApostrophes, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           "1:4-1:5: Expected a straight apostrophe: `'`, not `’`",
@@ -147,9 +148,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes, {preferred: 'smart'})
-    .process(apostrophes, function (error, file) {
+    .process(apostrophes, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           "1:10-1:11: Expected a smart apostrophe: `’`, not `'`",
@@ -164,9 +165,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(apostrophes, function (error, file) {
+    .process(apostrophes, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
@@ -181,9 +182,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes)
-    .process(nesting, function (error, file) {
+    .process(nesting, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
@@ -205,9 +206,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(nesting, function (error, file) {
+    .process(nesting, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
@@ -229,9 +230,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes)
-    .process(soManyOpenings, function (error, file) {
+    .process(soManyOpenings, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [null],
         'should deal with funky nesting'
       )
@@ -239,9 +240,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes, {preferred: 'straight', straight: ["'", '"']})
-    .process(thisAndThat, function (error, file) {
+    .process(thisAndThat, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
@@ -255,9 +256,9 @@ test('retext-quotes', function (t) {
 
   retext()
     .use(retextQuotes, {smart: ['«»', '‹›']})
-    .process(thisAndThat, function (error, file) {
+    .process(thisAndThat, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [
           null,
           '1:1-1:2: Expected a smart quote: `«`, not `"`',
@@ -273,9 +274,9 @@ test('retext-quotes', function (t) {
   retext()
     .use(retextSyntaxUrls)
     .use(retextQuotes, {preferred: 'straight'})
-    .process(thisAndThat, function (error, file) {
+    .process(thisAndThat, (error, file) => {
       t.deepEqual(
-        [error].concat(file.messages.map(String)),
+        [error].concat(file.messages.map((d) => String(d))),
         [null],
         'should integrate with `retext-syntax-urls` and check source nodes'
       )
