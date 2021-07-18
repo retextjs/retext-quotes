@@ -1,7 +1,7 @@
 import test from 'tape'
-import retext from 'retext'
+import {retext} from 'retext'
 import retextSyntaxUrls from 'retext-syntax-urls'
-import quotes from './index.js'
+import retextQuotes from './index.js'
 
 var mixed = [
   '“One ‘sentence’. Two sentences.”',
@@ -28,58 +28,58 @@ var soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
 
 var thisAndThat = '"this and \'that\'"'
 
-test('quotes(value)', function (t) {
+test('retext-quotes', function (t) {
   retext()
-    .use(quotes)
+    .use(retextQuotes)
     .process('Isn\'t it "funny"?', function (error, file) {
       t.deepEqual(
         JSON.parse(JSON.stringify([error].concat(file.messages))),
         [
           null,
           {
-            message: "Expected a smart apostrophe: `’`, not `'`",
             name: '1:4-1:5',
+            message: "Expected a smart apostrophe: `’`, not `'`",
             reason: "Expected a smart apostrophe: `’`, not `'`",
             line: 1,
             column: 4,
-            location: {
+            source: 'retext-quotes',
+            ruleId: 'apostrophe',
+            position: {
               start: {line: 1, column: 4, offset: 3},
               end: {line: 1, column: 5, offset: 4}
             },
-            source: 'retext-quotes',
-            ruleId: 'apostrophe',
             fatal: false,
             actual: "'",
             expected: ['’']
           },
           {
-            message: 'Expected a smart quote: `“`, not `"`',
             name: '1:10-1:11',
+            message: 'Expected a smart quote: `“`, not `"`',
             reason: 'Expected a smart quote: `“`, not `"`',
             line: 1,
             column: 10,
-            location: {
+            source: 'retext-quotes',
+            ruleId: 'quote',
+            position: {
               start: {line: 1, column: 10, offset: 9},
               end: {line: 1, column: 11, offset: 10}
             },
-            source: 'retext-quotes',
-            ruleId: 'quote',
             fatal: false,
             actual: '"',
             expected: ['“']
           },
           {
-            message: 'Expected a smart quote: `”`, not `"`',
             name: '1:16-1:17',
+            message: 'Expected a smart quote: `”`, not `"`',
             reason: 'Expected a smart quote: `”`, not `"`',
             line: 1,
             column: 16,
-            location: {
+            source: 'retext-quotes',
+            ruleId: 'quote',
+            position: {
               start: {line: 1, column: 16, offset: 15},
               end: {line: 1, column: 17, offset: 16}
             },
-            source: 'retext-quotes',
-            ruleId: 'quote',
             fatal: false,
             actual: '"',
             expected: ['”']
@@ -90,7 +90,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes)
+    .use(retextQuotes)
     .process(mixed, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -106,7 +106,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes, {preferred: 'straight'})
+    .use(retextQuotes, {preferred: 'straight'})
     .process(mixed, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -122,7 +122,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes)
+    .use(retextQuotes)
     .process(moreApostrophes, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -132,7 +132,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes, {preferred: 'straight'})
+    .use(retextQuotes, {preferred: 'straight'})
     .process(moreApostrophes, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -146,7 +146,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes, {preferred: 'smart'})
+    .use(retextQuotes, {preferred: 'smart'})
     .process(apostrophes, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -163,7 +163,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes, {preferred: 'straight'})
+    .use(retextQuotes, {preferred: 'straight'})
     .process(apostrophes, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -180,7 +180,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes)
+    .use(retextQuotes)
     .process(nesting, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -204,7 +204,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes, {preferred: 'straight'})
+    .use(retextQuotes, {preferred: 'straight'})
     .process(nesting, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -228,7 +228,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes)
+    .use(retextQuotes)
     .process(soManyOpenings, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -238,7 +238,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes, {preferred: 'straight', straight: ["'", '"']})
+    .use(retextQuotes, {preferred: 'straight', straight: ["'", '"']})
     .process(thisAndThat, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -254,7 +254,7 @@ test('quotes(value)', function (t) {
     })
 
   retext()
-    .use(quotes, {smart: ['«»', '‹›']})
+    .use(retextQuotes, {smart: ['«»', '‹›']})
     .process(thisAndThat, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
@@ -272,7 +272,7 @@ test('quotes(value)', function (t) {
   // GH-7.
   retext()
     .use(retextSyntaxUrls)
-    .use(quotes, {preferred: 'straight'})
+    .use(retextQuotes, {preferred: 'straight'})
     .process(thisAndThat, function (error, file) {
       t.deepEqual(
         [error].concat(file.messages.map(String)),
