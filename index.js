@@ -1,8 +1,6 @@
-'use strict'
-
-var toString = require('nlcst-to-string')
-var visit = require('unist-util-visit')
-var convert = require('unist-util-is/convert')
+import toString from 'nlcst-to-string'
+import visit from 'unist-util-visit'
+import convert from 'unist-util-is/convert.js'
 
 var word = convert('WordNode')
 var punctuation = convert('PunctuationNode')
@@ -23,10 +21,8 @@ var closing = 'close'
 var apostrophe = 'apostrophe'
 var quote = 'quote'
 
-module.exports = quotes
-
 // Check quote use.
-function quotes(options) {
+export default function retextQuotes(options) {
   var settings = options || {}
   var preferred = settings.preferred || 'smart'
   var smart = settings.smart || [doubleQuotationMarks, singleQuotationMarks]
@@ -151,11 +147,11 @@ function contains(value, markers, label) {
     both = marker.length > 1
 
     if (marker.charAt(0) === value) {
-      return {style: label, type: both ? opening : null, marker: marker}
+      return {style: label, type: both ? opening : null, marker}
     }
 
     if (both && marker.charAt(1) === value) {
-      return {style: label, type: closing, marker: marker}
+      return {style: label, type: closing, marker}
     }
   }
 }
@@ -168,7 +164,8 @@ function inferStyle(style, stack, node, index, parent) {
   var next
   var value
 
-  /* istanbul ignore if - Needed if this is ever externalised. */
+  // Needed if this is ever externalised.
+  /* c8 ignore next 3 */
   if (!node || !punctuation(node)) {
     return
   }

@@ -1,9 +1,7 @@
-'use strict'
-
-var test = require('tape')
-var retext = require('retext')
-var urls = require('retext-syntax-urls')
-var quotes = require('.')
+import test from 'tape'
+import retext from 'retext'
+import retextSyntaxUrls from 'retext-syntax-urls'
+import quotes from './index.js'
 
 var mixed = [
   '“One ‘sentence’. Two sentences.”',
@@ -273,7 +271,7 @@ test('quotes(value)', function (t) {
 
   // GH-7.
   retext()
-    .use(urls)
+    .use(retextSyntaxUrls)
     .use(quotes, {preferred: 'straight'})
     .process(thisAndThat, function (error, file) {
       t.deepEqual(
