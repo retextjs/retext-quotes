@@ -1,5 +1,6 @@
 import test from 'tape'
 import {retext} from 'retext'
+// @ts-expect-error: remove when updated.
 import retextSyntaxUrls from 'retext-syntax-urls'
 import retextQuotes from './index.js'
 
@@ -29,14 +30,15 @@ const soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
 const thisAndThat = '"this and \'that\'"'
 
 test('retext-quotes', (t) => {
+  t.plan(13)
+
   retext()
     .use(retextQuotes)
-    .process('Isn\'t it "funny"?', (error, file) => {
-      console.log(error)
+    .process('Isn\'t it "funny"?')
+    .then((file) => {
       t.deepEqual(
-        JSON.parse(JSON.stringify([error].concat(file.messages))),
+        JSON.parse(JSON.stringify(file.messages)),
         [
-          null,
           {
             name: '1:4-1:5',
             message: "Expected a smart apostrophe: `’`, not `'`",
@@ -88,15 +90,15 @@ test('retext-quotes', (t) => {
         ],
         'should emit messages'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes)
-    .process(mixed, (error, file) => {
+    .process(mixed)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           '3:1-3:2: Expected a smart quote: `“`, not `"`',
           "3:6-3:7: Expected a smart quote: `‘`, not `'`",
           "3:15-3:16: Expected a smart quote: `’`, not `'`",
@@ -104,15 +106,15 @@ test('retext-quotes', (t) => {
         ],
         'should catch straight quotes when preferring smart'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(mixed, (error, file) => {
+    .process(mixed)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
           "1:6-1:7: Expected a straight quote: `'`, not `‘`",
           "1:15-1:16: Expected a straight quote: `'`, not `’`",
@@ -120,39 +122,40 @@ test('retext-quotes', (t) => {
         ],
         'should catch smart quotes when preferring straight'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes)
-    .process(moreApostrophes, (error, file) => {
+    .process(moreApostrophes)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
-        [null],
+        file.messages.map((d) => String(d)),
+        [],
         'should detect common hard cases of apostrophes (when smart)'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(moreApostrophes, (error, file) => {
+    .process(moreApostrophes)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           "1:4-1:5: Expected a straight apostrophe: `'`, not `’`",
           "1:42-1:43: Expected a straight apostrophe: `'`, not `’`"
         ],
         'should detect common hard cases of apostrophes (when straight)'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes, {preferred: 'smart'})
-    .process(apostrophes, (error, file) => {
+    .process(apostrophes)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           "1:10-1:11: Expected a smart apostrophe: `’`, not `'`",
           "3:1-3:2: Expected a smart quote: `“`, not `'`",
           "3:11-3:12: Expected a smart quote: `”`, not `'`",
@@ -161,15 +164,15 @@ test('retext-quotes', (t) => {
         ],
         'should detect apostrophes correctly (when preferring smart)'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(apostrophes, (error, file) => {
+    .process(apostrophes)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
           '3:11-3:12: Expected `"` to be used at this level of nesting, not `\'`',
           "5:10-5:11: Expected a straight apostrophe: `'`, not `’`",
@@ -178,15 +181,15 @@ test('retext-quotes', (t) => {
         ],
         'should detect apostrophes correctly (when preferring straight)'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes)
-    .process(nesting, (error, file) => {
+    .process(nesting)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
           '3:6-3:7: Expected `‘` to be used at this level of nesting, not `“`',
           '3:15-3:16: Expected `’` to be used at this level of nesting, not `”`',
@@ -202,15 +205,15 @@ test('retext-quotes', (t) => {
         ],
         'should detect nesting correctly (when preferring smart)'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes, {preferred: 'straight'})
-    .process(nesting, (error, file) => {
+    .process(nesting)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
           "1:6-1:7: Expected a straight quote: `'`, not `‘`",
           "1:15-1:16: Expected a straight quote: `'`, not `’`",
@@ -226,25 +229,26 @@ test('retext-quotes', (t) => {
         ],
         'should detect nesting correctly (when preferring straight)'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes)
-    .process(soManyOpenings, (error, file) => {
+    .process(soManyOpenings)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
-        [null],
+        file.messages.map((d) => String(d)),
+        [],
         'should deal with funky nesting'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes, {preferred: 'straight', straight: ["'", '"']})
-    .process(thisAndThat, (error, file) => {
+    .process(thisAndThat)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
           '1:11-1:12: Expected `"` to be used at this level of nesting, not `\'`',
           '1:16-1:17: Expected `"` to be used at this level of nesting, not `\'`',
@@ -252,15 +256,15 @@ test('retext-quotes', (t) => {
         ],
         'should suggest based on the order of given straight quotes'
       )
-    })
+    }, t.ifErr)
 
   retext()
     .use(retextQuotes, {smart: ['«»', '‹›']})
-    .process(thisAndThat, (error, file) => {
+    .process(thisAndThat)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
+        file.messages.map((d) => String(d)),
         [
-          null,
           '1:1-1:2: Expected a smart quote: `«`, not `"`',
           "1:11-1:12: Expected a smart quote: `‹`, not `'`",
           "1:16-1:17: Expected a smart quote: `›`, not `'`",
@@ -268,19 +272,18 @@ test('retext-quotes', (t) => {
         ],
         'should suggest based on the order (and markers) of given smart quotes'
       )
-    })
+    }, t.ifErr)
 
   // GH-7.
   retext()
     .use(retextSyntaxUrls)
     .use(retextQuotes, {preferred: 'straight'})
-    .process(thisAndThat, (error, file) => {
+    .process(thisAndThat)
+    .then((file) => {
       t.deepEqual(
-        [error].concat(file.messages.map((d) => String(d))),
-        [null],
+        file.messages.map((d) => String(d)),
+        [],
         'should integrate with `retext-syntax-urls` and check source nodes'
       )
-    })
-
-  t.end()
+    }, t.ifErr)
 })
