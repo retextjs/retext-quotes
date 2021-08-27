@@ -1,6 +1,5 @@
 import test from 'tape'
 import {retext} from 'retext'
-// @ts-expect-error: remove when updated.
 import retextSyntaxUrls from 'retext-syntax-urls'
 import retextQuotes from './index.js'
 

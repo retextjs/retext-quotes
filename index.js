@@ -1,4 +1,9 @@
 /**
+ * @typedef {import('nlcst').Root} Root
+ * @typedef {import('nlcst').Sentence} Sentence
+ * @typedef {import('nlcst').Word} Word
+ * @typedef {import('nlcst').Punctuation} Punctuation
+ *
  * @typedef {'smart'|'straight'} Preference
  *
  * @typedef Options
@@ -24,13 +29,10 @@ const source = 'retext-quotes'
 /**
  * Plugin to check quote use.
  *
- * @type {import('unified').Plugin<[Options?]>}
+ * @type {import('unified').Plugin<[Options?], Root>}
  */
 export default function retextQuotes(options = {}) {
   /**
-   * @typedef {import('unist').Node} Node
-   * @typedef {import('unist').Parent} Parent
-   *
    * @typedef Marker
    * @property {Preference} style
    * @property {string} marker
@@ -48,7 +50,8 @@ export default function retextQuotes(options = {}) {
       /** @type {Marker[]} */
       const stack = []
 
-      visit(paragraph, 'PunctuationNode', (node, index, parent) => {
+      visit(paragraph, 'PunctuationNode', (node, index, parent_) => {
+        const parent = /** @type {Sentence|Word} */ (parent_)
         const actual = toString(node)
         const style = check(actual, straight, smart)
 
@@ -170,9 +173,9 @@ export default function retextQuotes(options = {}) {
    *
    * @param {Marker[]} stack
    * @param {Marker} style
-   * @param {Node} node
+   * @param {Punctuation} node
    * @param {number} index
-   * @param {Parent} parent
+   * @param {Sentence|Word} parent
    * @returns {void}
    */
   // eslint-disable-next-line max-params
