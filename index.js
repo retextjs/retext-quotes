@@ -25,6 +25,7 @@ const punctuation = convert('PunctuationNode')
 const wordOrSource = convert(['WordNode', 'SourceNode'])
 
 const source = 'retext-quotes'
+const url = 'https://github.com/retextjs/retext-quotes#readme'
 
 /**
  * Plugin to check quote use.
@@ -121,7 +122,7 @@ export default function retextQuotes(options = {}) {
             node,
             source + ':' + label
           ),
-          {actual, expected: [expected]}
+          {actual, expected: [expected], url}
         )
       })
 
