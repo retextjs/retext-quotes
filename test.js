@@ -52,7 +52,8 @@ test('retext-quotes', (t) => {
             },
             fatal: false,
             actual: "'",
-            expected: ['’']
+            expected: ['’'],
+            url: 'https://github.com/retextjs/retext-quotes#readme'
           },
           {
             name: '1:10-1:11',
@@ -68,7 +69,8 @@ test('retext-quotes', (t) => {
             },
             fatal: false,
             actual: '"',
-            expected: ['“']
+            expected: ['“'],
+            url: 'https://github.com/retextjs/retext-quotes#readme'
           },
           {
             name: '1:16-1:17',
@@ -84,7 +86,8 @@ test('retext-quotes', (t) => {
             },
             fatal: false,
             actual: '"',
-            expected: ['”']
+            expected: ['”'],
+            url: 'https://github.com/retextjs/retext-quotes#readme'
           }
         ],
         'should emit messages'
