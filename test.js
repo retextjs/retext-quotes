@@ -99,7 +99,7 @@ test('retext-quotes', (t) => {
     .process(mixed)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           '3:1-3:2: Expected a smart quote: `“`, not `"`',
           "3:6-3:7: Expected a smart quote: `‘`, not `'`",
@@ -115,7 +115,7 @@ test('retext-quotes', (t) => {
     .process(mixed)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
           "1:6-1:7: Expected a straight quote: `'`, not `‘`",
@@ -131,7 +131,7 @@ test('retext-quotes', (t) => {
     .process(moreApostrophes)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [],
         'should detect common hard cases of apostrophes (when smart)'
       )
@@ -142,7 +142,7 @@ test('retext-quotes', (t) => {
     .process(moreApostrophes)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           "1:4-1:5: Expected a straight apostrophe: `'`, not `’`",
           "1:42-1:43: Expected a straight apostrophe: `'`, not `’`"
@@ -156,7 +156,7 @@ test('retext-quotes', (t) => {
     .process(apostrophes)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           "1:10-1:11: Expected a smart apostrophe: `’`, not `'`",
           "3:1-3:2: Expected a smart quote: `“`, not `'`",
@@ -173,7 +173,7 @@ test('retext-quotes', (t) => {
     .process(apostrophes)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
           '3:11-3:12: Expected `"` to be used at this level of nesting, not `\'`',
@@ -190,7 +190,7 @@ test('retext-quotes', (t) => {
     .process(nesting)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
           '3:6-3:7: Expected `‘` to be used at this level of nesting, not `“`',
@@ -214,7 +214,7 @@ test('retext-quotes', (t) => {
     .process(nesting)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           '1:1-1:2: Expected a straight quote: `"`, not `“`',
           "1:6-1:7: Expected a straight quote: `'`, not `‘`",
@@ -238,7 +238,7 @@ test('retext-quotes', (t) => {
     .process(soManyOpenings)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [],
         'should deal with funky nesting'
       )
@@ -249,7 +249,7 @@ test('retext-quotes', (t) => {
     .process(thisAndThat)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
           '1:11-1:12: Expected `"` to be used at this level of nesting, not `\'`',
@@ -265,7 +265,7 @@ test('retext-quotes', (t) => {
     .process(thisAndThat)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [
           '1:1-1:2: Expected a smart quote: `«`, not `"`',
           "1:11-1:12: Expected a smart quote: `‹`, not `'`",
@@ -283,7 +283,7 @@ test('retext-quotes', (t) => {
     .process(thisAndThat)
     .then((file) => {
       t.deepEqual(
-        file.messages.map((d) => String(d)),
+        file.messages.map(String),
         [],
         'should integrate with `retext-syntax-urls` and check source nodes'
       )
