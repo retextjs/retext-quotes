@@ -79,7 +79,7 @@ import retextEnglish from 'retext-english'
 import retextQuotes from 'retext-quotes'
 import retextStringify from 'retext-stringify'
 
-const file = unified()
+const file = await unified()
   .use(retextEnglish)
   .use(retextQuotes)
   .use(retextStringify)
