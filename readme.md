@@ -8,53 +8,88 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**retext**][retext] plugin to check quotes and apostrophes, and warn if their
-style (`"straight"` or `“smart”`) or level of nesting is not the preferred
-style.
+**[retext][]** plugin to check quotes and apostrophes.
+
+## Contents
+
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
+*   [Install](#install)
+*   [Use](#use)
+*   [API](#api)
+    *   [`unified().use(retextQuotes[, options])`](#unifieduseretextquotes-options)
+*   [Messages](#messages)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
+*   [Related](#related)
+*   [Contribute](#contribute)
+*   [License](#license)
+
+## What is this?
+
+This package is a [unified][] ([retext][]) plugin to check quotes and
+apostrophes.
+It warns if their style (`"straight"` or `“smart”`) or level of nesting is not
+the preferred style.
+
+## When should I use this?
+
+You can opt-into this plugin when you’re dealing with content that might contain
+punctuation mistakes, and have authors that can fix that content.
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
-Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
-
-[npm][]:
+This package is [ESM only][esm].
+In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
 
 ```sh
 npm install retext-quotes
 ```
 
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import retextQuotes from 'https://esm.sh/retext-quotes@5'
+```
+
+In browsers with [`esm.sh`][esmsh]:
+
+```html
+<script type="module">
+  import retextQuotes from 'https://esm.sh/retext-quotes@5?bundle'
+</script>
+```
+
 ## Use
 
-Say we have the following file, `example.txt`:
+Say our document `example.txt` contains:
 
 ```txt
 A sentence "with quotes, 'nested' quotes,
 and '80s apostrophes."
 ```
 
-…and our script, `example.js`, looks like this:
+…and our module `example.js` looks as follows:
 
 ```js
-import {readSync} from 'to-vfile'
+import {read} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
 import {unified} from 'unified'
 import retextEnglish from 'retext-english'
 import retextQuotes from 'retext-quotes'
 import retextStringify from 'retext-stringify'
 
-const file = readSync('example.txt')
-
-unified()
+const file = unified()
   .use(retextEnglish)
   .use(retextQuotes)
   .use(retextStringify)
   .process(file)
-  .then((file) => {
-    console.error(reporter(file))
-  })
+  .process(await read('example.txt'))
+
+console.error(reporter(file))
 ```
 
-Now, running `node example` yields:
+…now running `node example.js` yields:
 
 ```txt
 example.txt
@@ -67,7 +102,8 @@ example.txt
 ⚠ 5 warnings
 ```
 
-This plugin can be configured to prefer “straight” quotes instead:
+The default is to prefer smart quotes.
+This can be changed to straight:
 
 ```diff
    .use(retextEnglish)
@@ -76,13 +112,13 @@ This plugin can be configured to prefer “straight” quotes instead:
    .use(retextStringify)
 ```
 
-Now, running `node example` again would yield:
+…now running `node example.js` once more yields:
 
 ```txt
 no issues found
 ```
 
-You can also pass in different markers that count as “smart”:
+You can pass in different markers that count as “smart”:
 
 ```diff
    .use(retextEnglish)
@@ -91,7 +127,7 @@ You can also pass in different markers that count as “smart”:
    .use(retextStringify)
 ```
 
-Running `node example` a final time yields:
+…now running `node example.js` a final time yields:
 
 ```txt
 example.txt
@@ -114,8 +150,8 @@ The default export is `retextQuotes`.
 Check quotes and apostrophes.
 Emit warnings when they don’t match the preferred style.
 
-This plugin knows about apostrophes as well and prefers `'` when `preferred:
-'straight'`, and `’` otherwise.
+This plugin knows about apostrophes as well and prefers `'` when
+`preferred: 'straight'`, and `’` otherwise.
 
 The values in `straight` and `smart` can be one or two characters.
 When two, the first character determines the opening quote and the second the
@@ -131,6 +167,10 @@ If quotes are nested deeper than the given amount of quotes, the markers wrap
 around: a third level of nesting when using `smart: ['«»', '‹›']` should have
 double guillemets, a fourth single, a fifth double again, etc.
 
+##### `options`
+
+Configuration (optional).
+
 ###### `options.preferred`
 
 Style of quotes to prefer (`'smart'` or `'straight'`, default: `'smart'`).
@@ -143,10 +183,10 @@ List of quotes to see as “straight” (`Array<string>`, default: `['"', '\'']`
 
 List of quotes to see as “smart” (`Array<string>`, default: `['“”', '‘’']`).
 
-### Messages
+## Messages
 
-Each message is emitted as a [`VFileMessage`][message] on `file`, with the
-following fields:
+Each message is emitted as a [`VFileMessage`][vfile-message] on `file`, with
+the following fields:
 
 ###### `message.source`
 
@@ -164,14 +204,26 @@ Current not ok character (`string`).
 
 Suggested replacement character (`Array<string>`).
 
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports the additional types `Options` and `Preference`.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
 ## Related
 
 *   [`retext-contractions`](https://github.com/retextjs/retext-contractions)
-    — Check apostrophe use in contractions
+    — check apostrophe use in contractions
 *   [`retext-diacritics`](https://github.com/retextjs/retext-diacritics)
-    — Check for proper use of diacritics
+    — check for proper use of diacritics
 *   [`retext-sentence-spacing`](https://github.com/retextjs/retext-sentence-spacing)
-    — Check spacing (one or two spaces) between sentences
+    — check spacing between sentences
 
 ## Contribute
 
@@ -217,18 +269,26 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
+[typescript]: https://www.typescriptlang.org
+
 [health]: https://github.com/retextjs/.github
 
-[contributing]: https://github.com/retextjs/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/retextjs/.github/blob/main/contributing.md
 
-[support]: https://github.com/retextjs/.github/blob/HEAD/support.md
+[support]: https://github.com/retextjs/.github/blob/main/support.md
 
-[coc]: https://github.com/retextjs/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/retextjs/.github/blob/main/code-of-conduct.md
 
 [license]: license
 
 [author]: https://wooorm.com
 
+[unified]: https://github.com/unifiedjs/unified
+
 [retext]: https://github.com/retextjs/retext
 
-[message]: https://github.com/vfile/vfile-message
+[vfile-message]: https://github.com/vfile/vfile-message
