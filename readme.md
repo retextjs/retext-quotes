@@ -137,11 +137,11 @@ Style of quotes to prefer (`'smart'` or `'straight'`, default: `'smart'`).
 
 ###### `options.straight`
 
-List of quotes to see as “straight” (`Array.<string>`, default: `['"', '\'']`).
+List of quotes to see as “straight” (`Array<string>`, default: `['"', '\'']`).
 
 ###### `options.smart`
 
-List of quotes to see as “smart” (`Array.<string>`, default: `['“”', '‘’']`).
+List of quotes to see as “smart” (`Array<string>`, default: `['“”', '‘’']`).
 
 ### Messages
 
@@ -162,7 +162,7 @@ Current not ok character (`string`).
 
 ###### `message.expected`
 
-Suggested replacement character (`Array.<string>`).
+Suggested replacement character (`Array<string>`).
 
 ## Related
 

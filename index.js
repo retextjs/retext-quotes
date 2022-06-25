@@ -10,9 +10,9 @@
  *   Configuration.
  * @property {Preference} [preferred='smart']
  *   Style of quotes to prefer.
- * @property {string[]} [straight=['"', "'"]]
+ * @property {Array<string>} [straight=['"', "'"]]
  *   List of quotes to see as “straight”.
- * @property {string[]} [smart=['“”', '‘’']]
+ * @property {Array<string>} [smart=['“”', '‘’']]
  *   List of quotes to see as “smart”.
  */
 
@@ -48,7 +48,7 @@ export default function retextQuotes(options = {}) {
     // Walk paragraphs first, that way if the stack isn’t closed properly we
     // can start fresh each paragraph.
     visit(tree, 'ParagraphNode', (paragraph) => {
-      /** @type {Marker[]} */
+      /** @type {Array<Marker>} */
       const stack = []
 
       visit(paragraph, 'PunctuationNode', (node, index, parent_) => {
@@ -134,8 +134,8 @@ export default function retextQuotes(options = {}) {
    * Check whether `straight` or `smart` contains `value`.
    *
    * @param {string} value
-   * @param {string[]} straight
-   * @param {string[]} smart
+   * @param {Array<string>} straight
+   * @param {Array<string>} smart
    * @returns {Marker|undefined}
    */
   function check(value, straight, smart) {
@@ -148,7 +148,7 @@ export default function retextQuotes(options = {}) {
    * Check if the marker is in `markers`.
    *
    * @param {string} value
-   * @param {string[]} markers
+   * @param {Array<string>} markers
    * @param {Preference} label
    * @returns {Marker|undefined}
    */
@@ -172,7 +172,7 @@ export default function retextQuotes(options = {}) {
   /**
    * Infere the `style` of a quote.
    *
-   * @param {Marker[]} stack
+   * @param {Array<Marker>} stack
    * @param {Marker} style
    * @param {Punctuation} node
    * @param {number} index
@@ -224,7 +224,7 @@ export default function retextQuotes(options = {}) {
   }
 
   /**
-   * @param {Marker[]} stack
+   * @param {Array<Marker>} stack
    * @param {Marker} style
    * @returns {boolean}
    */
