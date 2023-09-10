@@ -50,14 +50,14 @@ npm install retext-quotes
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import retextQuotes from 'https://esm.sh/retext-quotes@5'
+import retextQuotes from 'https://esm.sh/retext-quotes@6'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import retextQuotes from 'https://esm.sh/retext-quotes@5?bundle'
+  import retextQuotes from 'https://esm.sh/retext-quotes@6?bundle'
 </script>
 ```
 
