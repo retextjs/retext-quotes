@@ -18,6 +18,7 @@
 *   [Use](#use)
 *   [API](#api)
     *   [`unified().use(retextQuotes[, options])`](#unifieduseretextquotes-options)
+    *   [`Options`](#options)
 *   [Messages](#messages)
 *   [Types](#types)
 *   [Compatibility](#compatibility)
@@ -40,7 +41,7 @@ punctuation mistakes, and have authors that can fix that content.
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install retext-quotes
@@ -69,27 +70,26 @@ A sentence "with quotes, 'nested' quotes,
 and '80s apostrophes."
 ```
 
-…and our module `example.js` looks as follows:
+…and our module `example.js` contains:
 
 ```js
-import {read} from 'to-vfile'
-import {reporter} from 'vfile-reporter'
-import {unified} from 'unified'
 import retextEnglish from 'retext-english'
 import retextQuotes from 'retext-quotes'
 import retextStringify from 'retext-stringify'
+import {unified} from 'unified'
+import {read} from 'to-vfile'
+import {reporter} from 'vfile-reporter'
 
 const file = await unified()
   .use(retextEnglish)
   .use(retextQuotes)
   .use(retextStringify)
-  .process(file)
   .process(await read('example.txt'))
 
 console.error(reporter(file))
 ```
 
-…now running `node example.js` yields:
+…then running `node example.js` yields:
 
 ```txt
 example.txt
@@ -102,119 +102,76 @@ example.txt
 ⚠ 5 warnings
 ```
 
-The default is to prefer smart quotes.
-This can be changed to straight:
-
-```diff
-   .use(retextEnglish)
--  .use(retextQuotes)
-+  .use(retextQuotes, {preferred: 'straight'})
-   .use(retextStringify)
-```
-
-…now running `node example.js` once more yields:
-
-```txt
-no issues found
-```
-
-You can pass in different markers that count as “smart”:
-
-```diff
-   .use(retextEnglish)
--  .use(retextQuotes)
-+  .use(retextQuotes, {smart: ['«»', '‹›']})
-   .use(retextStringify)
-```
-
-…now running `node example.js` a final time yields:
-
-```txt
-example.txt
-  1:12-1:13  warning  Expected a smart quote: `«`, not `"`       quote       retext-quotes
-  1:26-1:27  warning  Expected a smart quote: `‹`, not `'`       quote       retext-quotes
-  1:33-1:34  warning  Expected a smart quote: `›`, not `'`       quote       retext-quotes
-    2:5-2:6  warning  Expected a smart apostrophe: `’`, not `'`  apostrophe  retext-quotes
-  2:22-2:23  warning  Expected a smart quote: `»`, not `"`       quote       retext-quotes
-
-⚠ 5 warnings
-```
-
 ## API
 
 This package exports no identifiers.
-The default export is `retextQuotes`.
+The default export is [`retextQuotes`][api-retext-quotes].
 
 ### `unified().use(retextQuotes[, options])`
 
 Check quotes and apostrophes.
-Emit warnings when they don’t match the preferred style.
+
+###### Parameters
+
+*   `options` ([`Options`][api-options], optional)
+    — configuration
+
+###### Returns
+
+Transform ([`Transformer`][unified-transformer]).
+
+###### Notes
 
 This plugin knows about apostrophes as well and prefers `'` when
 `preferred: 'straight'`, and `’` otherwise.
 
 The values in `straight` and `smart` can be one or two characters.
-When two, the first character determines the opening quote and the second the
-closing quote at that level.
+When two, the first character determines the opening quote and the second
+the closing quote at that level.
 When one, both the opening and closing quote are that character.
 
 The order in which the preferred quotes appear in their respective list
 determines which quotes to use at which level of nesting.
-So, to prefer `‘’` at the first level of nesting, and `“”` at the second, pass:
-`smart: ['‘’', '“”']`.
+So, to prefer `‘’` at the first level of nesting, and `“”` at the second,
+pass: `smart: ['‘’', '“”']`.
 
-If quotes are nested deeper than the given amount of quotes, the markers wrap
-around: a third level of nesting when using `smart: ['«»', '‹›']` should have
-double guillemets, a fourth single, a fifth double again, etc.
+If quotes are nested deeper than the given amount of quotes, the markers
+wrap around: a third level of nesting when using `smart: ['«»', '‹›']`
+should have double guillemets, a fourth single, a fifth double again, etc.
 
-##### `options`
+### `Options`
 
-Configuration (optional).
+Configuration (TypeScript type).
 
-###### `options.preferred`
+###### Fields
 
-Style of quotes to prefer (`'smart'` or `'straight'`, default: `'smart'`).
-
-###### `options.straight`
-
-List of quotes to see as “straight” (`Array<string>`, default: `['"', '\'']`).
-
-###### `options.smart`
-
-List of quotes to see as “smart” (`Array<string>`, default: `['“”', '‘’']`).
+*   `preferred` (`'smart'` or `'straight'`, default: `'smart'`)
+    — style of quotes to use
+*   `smart` (`Array<string>`, default: `['“”', '‘’']`)
+    — list of quotes to see as “smart”
+*   `smart` (`Array<string>`, default: `['"', "'"]`)
+    — list of quotes to see as “straight”
 
 ## Messages
 
 Each message is emitted as a [`VFileMessage`][vfile-message] on `file`, with
-the following fields:
-
-###### `message.source`
-
-Name of this plugin (`'retext-quotes'`).
-
-###### `message.ruleId`
-
-Category of message (`'apostrophe'` or `'quote'`)
-
-###### `message.actual`
-
-Current not ok character (`string`).
-
-###### `message.expected`
-
-Suggested replacement character (`Array<string>`).
+`source` set to `'retext-quotes'`, `ruleId` to `'apostrophe'` or `'quote'`,
+`actual` to the unexpected character, and `expected` to suggestions.
 
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports the additional types `Options` and `Preference`.
+It exports the additional type [`Options`][api-options].
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `retext-quotes@^5`,
+compatible with Node.js 12.
 
 ## Related
 
@@ -253,9 +210,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/retext-quotes
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/retext-quotes.svg
+[size-badge]: https://img.shields.io/bundlejs/size/retext-quotes
 
-[size]: https://bundlephobia.com/result?p=retext-quotes
+[size]: https://bundlejs.com/?q=retext-quotes
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -287,8 +244,14 @@ abide by its terms.
 
 [author]: https://wooorm.com
 
-[unified]: https://github.com/unifiedjs/unified
-
 [retext]: https://github.com/retextjs/retext
 
+[unified]: https://github.com/unifiedjs/unified
+
+[unified-transformer]: https://github.com/unifiedjs/unified#transformer
+
 [vfile-message]: https://github.com/vfile/vfile-message
+
+[api-options]: #options
+
+[api-retext-quotes]: #unifieduseretextquotes-options
