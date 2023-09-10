@@ -29,7 +29,13 @@ const soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
 
 const thisAndThat = '"this and \'that\'"'
 
-test('retext-quotes', async function (t) {
+test('retextQuotes', async function (t) {
+  await t.test('should expose the public api', async function () {
+    assert.deepEqual(Object.keys(await import('retext-quotes')).sort(), [
+      'default'
+    ])
+  })
+
   await t.test('should emit a message w/ metadata', async function () {
     const file = await retext().use(retextQuotes).process('Isn\'t it "funny"?')
 
