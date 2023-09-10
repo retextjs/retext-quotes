@@ -45,14 +45,14 @@ test('retextQuotes', async function (t) {
         ancestors: [],
         column: 4,
         fatal: false,
-        message: "Expected a smart apostrophe: `’`, not `'`",
+        message: "Unexpected straight apostrophe `'`, expected `’`",
         line: 1,
         name: '1:4-1:5',
         place: {
           start: {line: 1, column: 4, offset: 3},
           end: {line: 1, column: 5, offset: 4}
         },
-        reason: "Expected a smart apostrophe: `’`, not `'`",
+        reason: "Unexpected straight apostrophe `'`, expected `’`",
         ruleId: 'apostrophe',
         source: 'retext-quotes',
         actual: "'",
@@ -68,10 +68,10 @@ test('retextQuotes', async function (t) {
       const file = await retext().use(retextQuotes).process(mixed)
 
       assert.deepEqual(file.messages.map(String), [
-        '3:1-3:2: Expected a smart quote: `“`, not `"`',
-        "3:6-3:7: Expected a smart quote: `‘`, not `'`",
-        "3:15-3:16: Expected a smart quote: `’`, not `'`",
-        '3:32-3:33: Expected a smart quote: `”`, not `"`'
+        '3:1-3:2: Unexpected straight quote `"`, expected `“`',
+        "3:6-3:7: Unexpected straight quote `'`, expected `‘`",
+        "3:15-3:16: Unexpected straight quote `'`, expected `’`",
+        '3:32-3:33: Unexpected straight quote `"`, expected `”`'
       ])
     }
   )
@@ -84,10 +84,10 @@ test('retextQuotes', async function (t) {
         .process(mixed)
 
       assert.deepEqual(file.messages.map(String), [
-        '1:1-1:2: Expected a straight quote: `"`, not `“`',
-        "1:6-1:7: Expected a straight quote: `'`, not `‘`",
-        "1:15-1:16: Expected a straight quote: `'`, not `’`",
-        '1:32-1:33: Expected a straight quote: `"`, not `”`'
+        '1:1-1:2: Unexpected smart quote `“`, expected `"`',
+        "1:6-1:7: Unexpected smart quote `‘`, expected `'`",
+        "1:15-1:16: Unexpected smart quote `’`, expected `'`",
+        '1:32-1:33: Unexpected smart quote `”`, expected `"`'
       ])
     }
   )
@@ -109,8 +109,8 @@ test('retextQuotes', async function (t) {
         .process(moreApostrophes)
 
       assert.deepEqual(file.messages.map(String), [
-        "1:4-1:5: Expected a straight apostrophe: `'`, not `’`",
-        "1:42-1:43: Expected a straight apostrophe: `'`, not `’`"
+        "1:4-1:5: Unexpected smart apostrophe `’`, expected `'`",
+        "1:42-1:43: Unexpected smart apostrophe `’`, expected `'`"
       ])
     }
   )
@@ -123,11 +123,11 @@ test('retextQuotes', async function (t) {
         .process(apostrophes)
 
       assert.deepEqual(file.messages.map(String), [
-        "1:10-1:11: Expected a smart apostrophe: `’`, not `'`",
-        "3:1-3:2: Expected a smart quote: `“`, not `'`",
-        "3:11-3:12: Expected a smart quote: `”`, not `'`",
-        '7:1-7:2: Expected `“` to be used at this level of nesting, not `‘`',
-        '7:11-7:12: Expected `”` to be used at this level of nesting, not `’`'
+        "1:10-1:11: Unexpected straight apostrophe `'`, expected `’`",
+        "3:1-3:2: Unexpected straight quote `'`, expected `“`",
+        "3:11-3:12: Unexpected straight quote `'`, expected `”`",
+        '7:1-7:2: Unexpected `‘` at this level of nesting, expected `“`',
+        '7:11-7:12: Unexpected `’` at this level of nesting, expected `”`'
       ])
     }
   )
@@ -140,11 +140,11 @@ test('retextQuotes', async function (t) {
         .process(apostrophes)
 
       assert.deepEqual(file.messages.map(String), [
-        '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
-        '3:11-3:12: Expected `"` to be used at this level of nesting, not `\'`',
-        "5:10-5:11: Expected a straight apostrophe: `'`, not `’`",
-        '7:1-7:2: Expected a straight quote: `"`, not `‘`',
-        '7:11-7:12: Expected a straight quote: `"`, not `’`'
+        '3:1-3:2: Unexpected `\'` at this level of nesting, expected `"`',
+        '3:11-3:12: Unexpected `\'` at this level of nesting, expected `"`',
+        "5:10-5:11: Unexpected smart apostrophe `’`, expected `'`",
+        '7:1-7:2: Unexpected smart quote `‘`, expected `"`',
+        '7:11-7:12: Unexpected smart quote `’`, expected `"`'
       ])
     }
   )
@@ -155,18 +155,18 @@ test('retextQuotes', async function (t) {
       const file = await retext().use(retextQuotes).process(nesting)
 
       assert.deepEqual(file.messages.map(String), [
-        '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
-        '3:6-3:7: Expected `‘` to be used at this level of nesting, not `“`',
-        '3:15-3:16: Expected `’` to be used at this level of nesting, not `”`',
-        '3:32-3:33: Expected `”` to be used at this level of nesting, not `’`',
-        '5:1-5:2: Expected a smart quote: `“`, not `"`',
-        "5:6-5:7: Expected a smart quote: `‘`, not `'`",
-        "5:15-5:16: Expected a smart quote: `’`, not `'`",
-        '5:32-5:33: Expected a smart quote: `”`, not `"`',
-        "7:1-7:2: Expected a smart quote: `“`, not `'`",
-        '7:6-7:7: Expected a smart quote: `‘`, not `"`',
-        '7:15-7:16: Expected a smart quote: `’`, not `"`',
-        "7:32-7:33: Expected a smart quote: `”`, not `'`"
+        '3:1-3:2: Unexpected `‘` at this level of nesting, expected `“`',
+        '3:6-3:7: Unexpected `“` at this level of nesting, expected `‘`',
+        '3:15-3:16: Unexpected `”` at this level of nesting, expected `’`',
+        '3:32-3:33: Unexpected `’` at this level of nesting, expected `”`',
+        '5:1-5:2: Unexpected straight quote `"`, expected `“`',
+        "5:6-5:7: Unexpected straight quote `'`, expected `‘`",
+        "5:15-5:16: Unexpected straight quote `'`, expected `’`",
+        '5:32-5:33: Unexpected straight quote `"`, expected `”`',
+        "7:1-7:2: Unexpected straight quote `'`, expected `“`",
+        '7:6-7:7: Unexpected straight quote `"`, expected `‘`',
+        '7:15-7:16: Unexpected straight quote `"`, expected `’`',
+        "7:32-7:33: Unexpected straight quote `'`, expected `”`"
       ])
     }
   )
@@ -179,18 +179,18 @@ test('retextQuotes', async function (t) {
         .process(nesting)
 
       assert.deepEqual(file.messages.map(String), [
-        '1:1-1:2: Expected a straight quote: `"`, not `“`',
-        "1:6-1:7: Expected a straight quote: `'`, not `‘`",
-        "1:15-1:16: Expected a straight quote: `'`, not `’`",
-        '1:32-1:33: Expected a straight quote: `"`, not `”`',
-        '3:1-3:2: Expected a straight quote: `"`, not `‘`',
-        "3:6-3:7: Expected a straight quote: `'`, not `“`",
-        "3:15-3:16: Expected a straight quote: `'`, not `”`",
-        '3:32-3:33: Expected a straight quote: `"`, not `’`',
-        '7:1-7:2: Expected `"` to be used at this level of nesting, not `\'`',
-        '7:6-7:7: Expected `\'` to be used at this level of nesting, not `"`',
-        '7:15-7:16: Expected `\'` to be used at this level of nesting, not `"`',
-        '7:32-7:33: Expected `"` to be used at this level of nesting, not `\'`'
+        '1:1-1:2: Unexpected smart quote `“`, expected `"`',
+        "1:6-1:7: Unexpected smart quote `‘`, expected `'`",
+        "1:15-1:16: Unexpected smart quote `’`, expected `'`",
+        '1:32-1:33: Unexpected smart quote `”`, expected `"`',
+        '3:1-3:2: Unexpected smart quote `‘`, expected `"`',
+        "3:6-3:7: Unexpected smart quote `“`, expected `'`",
+        "3:15-3:16: Unexpected smart quote `”`, expected `'`",
+        '3:32-3:33: Unexpected smart quote `’`, expected `"`',
+        '7:1-7:2: Unexpected `\'` at this level of nesting, expected `"`',
+        '7:6-7:7: Unexpected `"` at this level of nesting, expected `\'`',
+        '7:15-7:16: Unexpected `"` at this level of nesting, expected `\'`',
+        '7:32-7:33: Unexpected `\'` at this level of nesting, expected `"`'
       ])
     }
   )
@@ -209,10 +209,10 @@ test('retextQuotes', async function (t) {
         .process(thisAndThat)
 
       assert.deepEqual(file.messages.map(String), [
-        '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
-        '1:11-1:12: Expected `"` to be used at this level of nesting, not `\'`',
-        '1:16-1:17: Expected `"` to be used at this level of nesting, not `\'`',
-        '1:17-1:18: Expected `\'` to be used at this level of nesting, not `"`'
+        '1:1-1:2: Unexpected `"` at this level of nesting, expected `\'`',
+        '1:11-1:12: Unexpected `\'` at this level of nesting, expected `"`',
+        '1:16-1:17: Unexpected `\'` at this level of nesting, expected `"`',
+        '1:17-1:18: Unexpected `"` at this level of nesting, expected `\'`'
       ])
     }
   )
@@ -225,10 +225,10 @@ test('retextQuotes', async function (t) {
         .process(thisAndThat)
 
       assert.deepEqual(file.messages.map(String), [
-        '1:1-1:2: Expected a smart quote: `«`, not `"`',
-        "1:11-1:12: Expected a smart quote: `‹`, not `'`",
-        "1:16-1:17: Expected a smart quote: `›`, not `'`",
-        '1:17-1:18: Expected a smart quote: `»`, not `"`'
+        '1:1-1:2: Unexpected straight quote `"`, expected `«`',
+        "1:11-1:12: Unexpected straight quote `'`, expected `‹`",
+        "1:16-1:17: Unexpected straight quote `'`, expected `›`",
+        '1:17-1:18: Unexpected straight quote `"`, expected `»`'
       ])
     }
   )
