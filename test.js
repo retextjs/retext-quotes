@@ -1,4 +1,5 @@
-import test from 'tape'
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {retext} from 'retext'
 import retextSyntaxUrls from 'retext-syntax-urls'
 import retextQuotes from './index.js'
@@ -28,229 +29,214 @@ const soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
 
 const thisAndThat = '"this and \'that\'"'
 
-test('retext-quotes', (t) => {
-  t.plan(13)
+test('retext-quotes', async function (t) {
+  await t.test('should emit a message w/ metadata', async function () {
+    const file = await retext().use(retextQuotes).process('Isn\'t it "funny"?')
 
-  retext()
-    .use(retextQuotes)
-    .process('Isn\'t it "funny"?')
-    .then((file) => {
-      t.deepEqual(
-        JSON.parse(JSON.stringify({...file.messages[0], ancestors: []})),
-        {
-          ancestors: [],
-          column: 4,
-          fatal: false,
-          message: "Expected a smart apostrophe: `’`, not `'`",
-          line: 1,
-          name: '1:4-1:5',
-          place: {
-            start: {line: 1, column: 4, offset: 3},
-            end: {line: 1, column: 5, offset: 4}
-          },
-          reason: "Expected a smart apostrophe: `’`, not `'`",
-          ruleId: 'apostrophe',
-          source: 'retext-quotes',
-          actual: "'",
-          expected: ['’'],
-          url: 'https://github.com/retextjs/retext-quotes#readme'
+    assert.deepEqual(
+      JSON.parse(JSON.stringify({...file.messages[0], ancestors: []})),
+      {
+        ancestors: [],
+        column: 4,
+        fatal: false,
+        message: "Expected a smart apostrophe: `’`, not `'`",
+        line: 1,
+        name: '1:4-1:5',
+        place: {
+          start: {line: 1, column: 4, offset: 3},
+          end: {line: 1, column: 5, offset: 4}
         },
-        'should emit messages'
-      )
-    }, t.ifErr)
+        reason: "Expected a smart apostrophe: `’`, not `'`",
+        ruleId: 'apostrophe',
+        source: 'retext-quotes',
+        actual: "'",
+        expected: ['’'],
+        url: 'https://github.com/retextjs/retext-quotes#readme'
+      }
+    )
+  })
 
-  retext()
-    .use(retextQuotes)
-    .process(mixed)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          '3:1-3:2: Expected a smart quote: `“`, not `"`',
-          "3:6-3:7: Expected a smart quote: `‘`, not `'`",
-          "3:15-3:16: Expected a smart quote: `’`, not `'`",
-          '3:32-3:33: Expected a smart quote: `”`, not `"`'
-        ],
-        'should catch straight quotes when preferring smart'
-      )
-    }, t.ifErr)
+  await t.test(
+    'should catch straight quotes when preferring smart',
+    async function () {
+      const file = await retext().use(retextQuotes).process(mixed)
 
-  retext()
-    .use(retextQuotes, {preferred: 'straight'})
-    .process(mixed)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          '1:1-1:2: Expected a straight quote: `"`, not `“`',
-          "1:6-1:7: Expected a straight quote: `'`, not `‘`",
-          "1:15-1:16: Expected a straight quote: `'`, not `’`",
-          '1:32-1:33: Expected a straight quote: `"`, not `”`'
-        ],
-        'should catch smart quotes when preferring straight'
-      )
-    }, t.ifErr)
+      assert.deepEqual(file.messages.map(String), [
+        '3:1-3:2: Expected a smart quote: `“`, not `"`',
+        "3:6-3:7: Expected a smart quote: `‘`, not `'`",
+        "3:15-3:16: Expected a smart quote: `’`, not `'`",
+        '3:32-3:33: Expected a smart quote: `”`, not `"`'
+      ])
+    }
+  )
 
-  retext()
-    .use(retextQuotes)
-    .process(moreApostrophes)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [],
-        'should detect common hard cases of apostrophes (when smart)'
-      )
-    }, t.ifErr)
+  await t.test(
+    'should catch smart quotes when preferring straight',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {preferred: 'straight'})
+        .process(mixed)
 
-  retext()
-    .use(retextQuotes, {preferred: 'straight'})
-    .process(moreApostrophes)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          "1:4-1:5: Expected a straight apostrophe: `'`, not `’`",
-          "1:42-1:43: Expected a straight apostrophe: `'`, not `’`"
-        ],
-        'should detect common hard cases of apostrophes (when straight)'
-      )
-    }, t.ifErr)
+      assert.deepEqual(file.messages.map(String), [
+        '1:1-1:2: Expected a straight quote: `"`, not `“`',
+        "1:6-1:7: Expected a straight quote: `'`, not `‘`",
+        "1:15-1:16: Expected a straight quote: `'`, not `’`",
+        '1:32-1:33: Expected a straight quote: `"`, not `”`'
+      ])
+    }
+  )
 
-  retext()
-    .use(retextQuotes, {preferred: 'smart'})
-    .process(apostrophes)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          "1:10-1:11: Expected a smart apostrophe: `’`, not `'`",
-          "3:1-3:2: Expected a smart quote: `“`, not `'`",
-          "3:11-3:12: Expected a smart quote: `”`, not `'`",
-          '7:1-7:2: Expected `“` to be used at this level of nesting, not `‘`',
-          '7:11-7:12: Expected `”` to be used at this level of nesting, not `’`'
-        ],
-        'should detect apostrophes correctly (when preferring smart)'
-      )
-    }, t.ifErr)
+  await t.test(
+    'should detect common hard cases of apostrophes (when smart)',
+    async function () {
+      const file = await retext().use(retextQuotes).process(moreApostrophes)
 
-  retext()
-    .use(retextQuotes, {preferred: 'straight'})
-    .process(apostrophes)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
-          '3:11-3:12: Expected `"` to be used at this level of nesting, not `\'`',
-          "5:10-5:11: Expected a straight apostrophe: `'`, not `’`",
-          '7:1-7:2: Expected a straight quote: `"`, not `‘`',
-          '7:11-7:12: Expected a straight quote: `"`, not `’`'
-        ],
-        'should detect apostrophes correctly (when preferring straight)'
-      )
-    }, t.ifErr)
+      assert.deepEqual(file.messages.map(String), [])
+    }
+  )
 
-  retext()
-    .use(retextQuotes)
-    .process(nesting)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
-          '3:6-3:7: Expected `‘` to be used at this level of nesting, not `“`',
-          '3:15-3:16: Expected `’` to be used at this level of nesting, not `”`',
-          '3:32-3:33: Expected `”` to be used at this level of nesting, not `’`',
-          '5:1-5:2: Expected a smart quote: `“`, not `"`',
-          "5:6-5:7: Expected a smart quote: `‘`, not `'`",
-          "5:15-5:16: Expected a smart quote: `’`, not `'`",
-          '5:32-5:33: Expected a smart quote: `”`, not `"`',
-          "7:1-7:2: Expected a smart quote: `“`, not `'`",
-          '7:6-7:7: Expected a smart quote: `‘`, not `"`',
-          '7:15-7:16: Expected a smart quote: `’`, not `"`',
-          "7:32-7:33: Expected a smart quote: `”`, not `'`"
-        ],
-        'should detect nesting correctly (when preferring smart)'
-      )
-    }, t.ifErr)
+  await t.test(
+    'should detect common hard cases of apostrophes (when straight)',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {preferred: 'straight'})
+        .process(moreApostrophes)
 
-  retext()
-    .use(retextQuotes, {preferred: 'straight'})
-    .process(nesting)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          '1:1-1:2: Expected a straight quote: `"`, not `“`',
-          "1:6-1:7: Expected a straight quote: `'`, not `‘`",
-          "1:15-1:16: Expected a straight quote: `'`, not `’`",
-          '1:32-1:33: Expected a straight quote: `"`, not `”`',
-          '3:1-3:2: Expected a straight quote: `"`, not `‘`',
-          "3:6-3:7: Expected a straight quote: `'`, not `“`",
-          "3:15-3:16: Expected a straight quote: `'`, not `”`",
-          '3:32-3:33: Expected a straight quote: `"`, not `’`',
-          '7:1-7:2: Expected `"` to be used at this level of nesting, not `\'`',
-          '7:6-7:7: Expected `\'` to be used at this level of nesting, not `"`',
-          '7:15-7:16: Expected `\'` to be used at this level of nesting, not `"`',
-          '7:32-7:33: Expected `"` to be used at this level of nesting, not `\'`'
-        ],
-        'should detect nesting correctly (when preferring straight)'
-      )
-    }, t.ifErr)
+      assert.deepEqual(file.messages.map(String), [
+        "1:4-1:5: Expected a straight apostrophe: `'`, not `’`",
+        "1:42-1:43: Expected a straight apostrophe: `'`, not `’`"
+      ])
+    }
+  )
 
-  retext()
-    .use(retextQuotes)
-    .process(soManyOpenings)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [],
-        'should deal with funky nesting'
-      )
-    }, t.ifErr)
+  await t.test(
+    'should detect apostrophes correctly (when preferring smart)',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {preferred: 'smart'})
+        .process(apostrophes)
 
-  retext()
-    .use(retextQuotes, {preferred: 'straight', straight: ["'", '"']})
-    .process(thisAndThat)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
-          '1:11-1:12: Expected `"` to be used at this level of nesting, not `\'`',
-          '1:16-1:17: Expected `"` to be used at this level of nesting, not `\'`',
-          '1:17-1:18: Expected `\'` to be used at this level of nesting, not `"`'
-        ],
-        'should suggest based on the order of given straight quotes'
-      )
-    }, t.ifErr)
+      assert.deepEqual(file.messages.map(String), [
+        "1:10-1:11: Expected a smart apostrophe: `’`, not `'`",
+        "3:1-3:2: Expected a smart quote: `“`, not `'`",
+        "3:11-3:12: Expected a smart quote: `”`, not `'`",
+        '7:1-7:2: Expected `“` to be used at this level of nesting, not `‘`',
+        '7:11-7:12: Expected `”` to be used at this level of nesting, not `’`'
+      ])
+    }
+  )
 
-  retext()
-    .use(retextQuotes, {smart: ['«»', '‹›']})
-    .process(thisAndThat)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [
-          '1:1-1:2: Expected a smart quote: `«`, not `"`',
-          "1:11-1:12: Expected a smart quote: `‹`, not `'`",
-          "1:16-1:17: Expected a smart quote: `›`, not `'`",
-          '1:17-1:18: Expected a smart quote: `»`, not `"`'
-        ],
-        'should suggest based on the order (and markers) of given smart quotes'
-      )
-    }, t.ifErr)
+  await t.test(
+    'should detect apostrophes correctly (when preferring straight)',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {preferred: 'straight'})
+        .process(apostrophes)
 
-  // GH-7.
-  retext()
-    .use(retextSyntaxUrls)
-    .use(retextQuotes, {preferred: 'straight'})
-    .process(thisAndThat)
-    .then((file) => {
-      t.deepEqual(
-        file.messages.map(String),
-        [],
-        'should integrate with `retext-syntax-urls` and check source nodes'
-      )
-    }, t.ifErr)
+      assert.deepEqual(file.messages.map(String), [
+        '3:1-3:2: Expected `"` to be used at this level of nesting, not `\'`',
+        '3:11-3:12: Expected `"` to be used at this level of nesting, not `\'`',
+        "5:10-5:11: Expected a straight apostrophe: `'`, not `’`",
+        '7:1-7:2: Expected a straight quote: `"`, not `‘`',
+        '7:11-7:12: Expected a straight quote: `"`, not `’`'
+      ])
+    }
+  )
+
+  await t.test(
+    'should detect nesting correctly (when preferring smart)',
+    async function () {
+      const file = await retext().use(retextQuotes).process(nesting)
+
+      assert.deepEqual(file.messages.map(String), [
+        '3:1-3:2: Expected `“` to be used at this level of nesting, not `‘`',
+        '3:6-3:7: Expected `‘` to be used at this level of nesting, not `“`',
+        '3:15-3:16: Expected `’` to be used at this level of nesting, not `”`',
+        '3:32-3:33: Expected `”` to be used at this level of nesting, not `’`',
+        '5:1-5:2: Expected a smart quote: `“`, not `"`',
+        "5:6-5:7: Expected a smart quote: `‘`, not `'`",
+        "5:15-5:16: Expected a smart quote: `’`, not `'`",
+        '5:32-5:33: Expected a smart quote: `”`, not `"`',
+        "7:1-7:2: Expected a smart quote: `“`, not `'`",
+        '7:6-7:7: Expected a smart quote: `‘`, not `"`',
+        '7:15-7:16: Expected a smart quote: `’`, not `"`',
+        "7:32-7:33: Expected a smart quote: `”`, not `'`"
+      ])
+    }
+  )
+
+  await t.test(
+    'should detect nesting correctly (when preferring straight)',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {preferred: 'straight'})
+        .process(nesting)
+
+      assert.deepEqual(file.messages.map(String), [
+        '1:1-1:2: Expected a straight quote: `"`, not `“`',
+        "1:6-1:7: Expected a straight quote: `'`, not `‘`",
+        "1:15-1:16: Expected a straight quote: `'`, not `’`",
+        '1:32-1:33: Expected a straight quote: `"`, not `”`',
+        '3:1-3:2: Expected a straight quote: `"`, not `‘`',
+        "3:6-3:7: Expected a straight quote: `'`, not `“`",
+        "3:15-3:16: Expected a straight quote: `'`, not `”`",
+        '3:32-3:33: Expected a straight quote: `"`, not `’`',
+        '7:1-7:2: Expected `"` to be used at this level of nesting, not `\'`',
+        '7:6-7:7: Expected `\'` to be used at this level of nesting, not `"`',
+        '7:15-7:16: Expected `\'` to be used at this level of nesting, not `"`',
+        '7:32-7:33: Expected `"` to be used at this level of nesting, not `\'`'
+      ])
+    }
+  )
+
+  await t.test('should deal with funky nesting', async function () {
+    const file = await retext().use(retextQuotes).process(soManyOpenings)
+
+    assert.deepEqual(file.messages.map(String), [])
+  })
+
+  await t.test(
+    'should suggest based on the order of given straight quotes',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {preferred: 'straight', straight: ["'", '"']})
+        .process(thisAndThat)
+
+      assert.deepEqual(file.messages.map(String), [
+        '1:1-1:2: Expected `\'` to be used at this level of nesting, not `"`',
+        '1:11-1:12: Expected `"` to be used at this level of nesting, not `\'`',
+        '1:16-1:17: Expected `"` to be used at this level of nesting, not `\'`',
+        '1:17-1:18: Expected `\'` to be used at this level of nesting, not `"`'
+      ])
+    }
+  )
+
+  await t.test(
+    'should suggest based on the order (and markers) of given smart quotes',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {smart: ['«»', '‹›']})
+        .process(thisAndThat)
+
+      assert.deepEqual(file.messages.map(String), [
+        '1:1-1:2: Expected a smart quote: `«`, not `"`',
+        "1:11-1:12: Expected a smart quote: `‹`, not `'`",
+        "1:16-1:17: Expected a smart quote: `›`, not `'`",
+        '1:17-1:18: Expected a smart quote: `»`, not `"`'
+      ])
+    }
+  )
+
+  await t.test(
+    'should integrate with `retext-syntax-urls` and check source nodes',
+    async function () {
+      // GH-7.
+      const file = await retext()
+        .use(retextSyntaxUrls)
+        .use(retextQuotes, {preferred: 'straight'})
+        .process(thisAndThat)
+
+      assert.deepEqual(file.messages.map(String), [])
+    }
+  )
 })
