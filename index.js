@@ -56,7 +56,7 @@ export default function retextQuotes(options = {}) {
         const actual = toString(node)
         const style = check(actual, straight, smart)
 
-        if (!style || !parent || index === null) {
+        if (!style || !parent || index === undefined) {
           return
         }
 
