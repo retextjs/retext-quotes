@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {retext} from 'retext'
 import retextSyntaxUrls from 'retext-syntax-urls'
-import retextQuotes from './index.js'
+import retextQuotes from 'retext-quotes'
 
 const mixed = [
   '“One ‘sentence’. Two sentences.”',
