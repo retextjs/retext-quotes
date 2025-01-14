@@ -149,7 +149,7 @@ Configuration (TypeScript type).
     — style of quotes to use
 *   `smart` (`Array<string>`, default: `['“”', '‘’']`)
     — list of quotes to see as “smart”
-*   `smart` (`Array<string>`, default: `['"', "'"]`)
+*   `straight` (`Array<string>`, default: `['"', "'"]`)
     — list of quotes to see as “straight”
 
 ## Messages
