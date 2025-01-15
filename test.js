@@ -40,6 +40,7 @@ test('retextQuotes', async function (t) {
     const file = await retext().use(retextQuotes).process('Isn\'t it "funny"?')
 
     assert.deepEqual(
+      // eslint-disable-next-line unicorn/prefer-structured-clone -- drop `__proto__` chain.
       JSON.parse(JSON.stringify({...file.messages[0], ancestors: []})),
       {
         ancestors: [],

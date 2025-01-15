@@ -12,19 +12,19 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`unified().use(retextQuotes[, options])`](#unifieduseretextquotes-options)
-    *   [`Options`](#options)
-*   [Messages](#messages)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`unified().use(retextQuotes[, options])`](#unifieduseretextquotes-options)
+  * [`Options`](#options)
+* [Messages](#messages)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -113,8 +113,8 @@ Check quotes and apostrophes.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], optional)
-    — configuration
+* `options` ([`Options`][api-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -145,12 +145,12 @@ Configuration (TypeScript type).
 
 ###### Fields
 
-*   `preferred` (`'smart'` or `'straight'`, default: `'smart'`)
-    — style of quotes to use
-*   `smart` (`Array<string>`, default: `['“”', '‘’']`)
-    — list of quotes to see as “smart”
-*   `straight` (`Array<string>`, default: `['"', "'"]`)
-    — list of quotes to see as “straight”
+* `preferred` (`'smart'` or `'straight'`, default: `'smart'`)
+  — style of quotes to use
+* `smart` (`Array<string>`, default: `['“”', '‘’']`)
+  — list of quotes to see as “smart”
+* `straight` (`Array<string>`, default: `['"', "'"]`)
+  — list of quotes to see as “straight”
 
 ## Messages
 
@@ -175,12 +175,12 @@ compatible with Node.js 16.
 
 ## Related
 
-*   [`retext-contractions`](https://github.com/retextjs/retext-contractions)
-    — check apostrophe use in contractions
-*   [`retext-diacritics`](https://github.com/retextjs/retext-diacritics)
-    — check for proper use of diacritics
-*   [`retext-sentence-spacing`](https://github.com/retextjs/retext-sentence-spacing)
-    — check spacing between sentences
+* [`retext-contractions`](https://github.com/retextjs/retext-contractions)
+  — check apostrophe use in contractions
+* [`retext-diacritics`](https://github.com/retextjs/retext-diacritics)
+  — check for proper use of diacritics
+* [`retext-sentence-spacing`](https://github.com/retextjs/retext-sentence-spacing)
+  — check spacing between sentences
 
 ## Contribute
 
