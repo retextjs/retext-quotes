@@ -23,6 +23,12 @@ const nesting = [
   '\'One "sentence". Two sentences.\''
 ].join('\n\n')
 
+const multiNesting = [
+  'A sentence “with ‘multi «mutli “nested ‘quotes’”»’”.', // correct case when {smart: ['“”', '‘’', '«»']} (TODO: REMOVE THESE COMMENTS!!!)
+  'A sentence ‘with “multi «mutli ‘nested “quotes”’»”’.', // '“”' and '‘’' are swapped -> wrong
+  'A sentence «with “multi ‘mutli «nested “quotes”»’”».' // that's how it is currently evalutes to be right -> but it should be wrong
+].join('\n\n')
+
 const moreApostrophes = 'Isn’t it funny? It was acceptable in the ’80s'
 
 const soManyOpenings = '“Open this, ‘Open that, “open here, ‘open there'
@@ -191,6 +197,39 @@ test('retextQuotes', async function (t) {
         '7:6-7:7: Unexpected `"` at this level of nesting, expected `\'`',
         '7:15-7:16: Unexpected `"` at this level of nesting, expected `\'`',
         '7:32-7:33: Unexpected `\'` at this level of nesting, expected `"`'
+      ])
+    }
+  )
+
+  await t.test(
+    'should detect nesting with more than 2 defined quotes correctly',
+    async function () {
+      const file = await retext()
+        .use(retextQuotes, {smart: ['“”', '‘’', '«»']})
+        .process(multiNesting)
+
+      console.log(file.messages.map(String))
+
+      assert.deepEqual(file.messages.map(String), [
+        '3:12-3:13: Unexpected `‘` at this level of nesting, expected `“`',
+        '3:18-3:19: Unexpected `“` at this level of nesting, expected `‘`',
+        '3:32-3:33: Unexpected `‘` at this level of nesting, expected `“`',
+        '3:40-3:41: Unexpected `“` at this level of nesting, expected `‘`',
+        '3:47-3:48: Unexpected `”` at this level of nesting, expected `’`',
+        '3:48-3:49: Unexpected `’` at this level of nesting, expected `”`',
+        '3:50-3:51: Unexpected `”` at this level of nesting, expected `’`',
+        '3:51-3:52: Unexpected `’` at this level of nesting, expected `”`',
+
+        '5:12-5:13: Unexpected `«` at this level of nesting, expected `“`',
+        '5:18-5:19: Unexpected `“` at this level of nesting, expected `‘`',
+        '5:25-5:26: Unexpected `‘` at this level of nesting, expected `«`',
+        '5:32-5:33: Unexpected `«` at this level of nesting, expected `“`',
+        '5:40-5:41: Unexpected `“` at this level of nesting, expected `‘`',
+        '5:47-5:48: Unexpected `”` at this level of nesting, expected `’`',
+        '5:48-5:49: Unexpected `»` at this level of nesting, expected `”`',
+        '5:49-5:50: Unexpected `’` at this level of nesting, expected `»`',
+        '5:50-5:51: Unexpected `”` at this level of nesting, expected `’`',
+        '5:51-5:52: Unexpected `»` at this level of nesting, expected `”`'
       ])
     }
   )
