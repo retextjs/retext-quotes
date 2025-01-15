@@ -196,6 +196,14 @@ test('retextQuotes', async function (t) {
     }
   )
 
+  await t.test('should detect nesting correctly w/ 3 pairs', async function () {
+    const file = await retext()
+      .use(retextQuotes, {smart: ['“”', '‘’', '«»']})
+      .process('A sentence “with ‘multiple «nested “quotes”»’”.')
+
+    assert.deepEqual(file.messages.map(String), [])
+  })
+
   await t.test('should deal with funky nesting', async function () {
     const file = await retext().use(retextQuotes).process(soManyOpenings)
 
