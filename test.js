@@ -196,17 +196,75 @@ test('retextQuotes', async function (t) {
     }
   )
 
-  await t.test('should detect nesting correctly w/ 3 pairs', async function () {
+  await t.test('should detect nesting correctly w/ 1 pair', async function () {
     const file = await retext()
-      .use(retextQuotes, {smart: ['“”', '‘’', '«»']})
-      .process('A sentence “with ‘multiple «nested “quotes”»’”.')
+      .use(retextQuotes, {smart: ['“”']})
+      .process(
+        `A sentence with “quotes”.
+
+A sentence with “nested “quotes””.
+
+A sentence with “multiple “nested “quotes”””.
+
+Mismatched closing” quotes.
+
+Mismatched closing’ quotes.
+
+Mismatched “opening quotes.
+
+Mismatched ‘opening quotes.
+`
+      )
 
     assert.deepEqual(file.messages.map(String), [])
   })
 
+  await t.test('should detect nesting correctly w/ 2 pairs', async function () {
+    const file = await retext().use(retextQuotes, {smart: ['“”', '‘’']})
+      .process(`A sentence with “quotes”.
+
+A sentence with “nested ‘quotes’”.
+
+A sentence with “multiple ‘nested “quotes”’”.
+
+Mismatched closing” quotes.
+
+Mismatched closing’ quotes.
+
+Mismatched “opening quotes.
+
+Mismatched ‘opening quotes.
+`)
+
+    assert.deepEqual(file.messages.map(String), [
+      '13:12-13:13: Unexpected `‘` at this level of nesting, expected `“`'
+    ])
+  })
+
+  await t.test('should detect nesting correctly w/ 3 pairs', async function () {
+    const file = await retext().use(retextQuotes, {smart: ['“”', '‘’', '«»']})
+      .process(`A sentence with “quotes”.
+
+A sentence with “nested ‘quotes’”.
+
+A sentence with “multiple ‘nested «quotes»’”.
+
+Mismatched closing” quotes.
+
+Mismatched closing’ quotes.
+
+Mismatched “opening quotes.
+
+Mismatched ‘opening quotes.
+`)
+
+    assert.deepEqual(file.messages.map(String), [
+      '13:12-13:13: Unexpected `‘` at this level of nesting, expected `“`'
+    ])
+  })
+
   await t.test('should deal with funky nesting', async function () {
     const file = await retext().use(retextQuotes).process(soManyOpenings)
-
     assert.deepEqual(file.messages.map(String), [])
   })
 
